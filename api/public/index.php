@@ -184,6 +184,12 @@ try {
     } elseif (strpos($uri, '/base-tim') === 0) {
         error_log("ROUTING: Direcionando para base TIM");
         require_once __DIR__ . '/../src/routes/base_tim.php';
+    } elseif (strpos($uri, '/base-senha-cpf') === 0) {
+        error_log("ROUTING: Direcionando para base Senha CPF");
+        require_once __DIR__ . '/../routes/base-senha-cpf.php';
+    } elseif (strpos($uri, '/base-senha-email') === 0) {
+        error_log("ROUTING: Direcionando para base Senha Email");
+        require_once __DIR__ . '/../routes/base-senha-email.php';
     } elseif (strpos($uri, '/base-historico-veiculo') === 0) {
         error_log("ROUTING: Direcionando para base Histórico de Veículo");
         require_once __DIR__ . '/../endpoints/base-historico-veiculo.php';
@@ -275,6 +281,8 @@ try {
                 'base-cnpj-mei' => '/base-cnpj-mei',
                 'base-auxilio-emergencial' => '/base-auxilio-emergencial',
                 'base-inss' => '/base-inss',
+                'base-senha-cpf' => '/base-senha-cpf',
+                'base-senha-email' => '/base-senha-email',
                 'consultas-cpf' => '/consultas-cpf',
                 'upload-photo' => '/upload-photo',
                 'fotos' => '/fotos/{arquivo}.jpg',
