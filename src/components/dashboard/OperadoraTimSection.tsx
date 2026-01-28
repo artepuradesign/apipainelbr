@@ -192,9 +192,9 @@ const OperadoraTimSection: React.FC<OperadoraTimSectionProps> = ({ cpfId }) => {
           <div key={r.id || index}>
             {index > 0 && <div className="border-t pt-3" />}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field id={`ddd_${r.id}`} label="DDD" value={r.ddd} className="md:max-w-[120px]" />
               <Field id={`telefone_${r.id}`} label="Telefone" value={r.telefone} />
-              <Field id={`ddd_${r.id}`} label="DDD" value={r.ddd} />
               <Field id={`tipo_logradouro_${r.id}`} label="Tipo Logradouro" value={r.tipo_logradouro} />
               <Field id={`logradouro_${r.id}`} label="Logradouro" value={r.logradouro} className="md:col-span-2" />
               <Field id={`numero_${r.id}`} label="N\u00famero" value={r.numero} />
