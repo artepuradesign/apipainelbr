@@ -250,6 +250,21 @@ try {
         include $routeFile;
         exit();
     }
+
+    // Base Documento - CRUD e consulta por cpf_id (base_documento)
+    if (strpos($endpoint, '/base-documento') === 0) {
+        $routeFile = __DIR__ . '/routes/base-documento.php';
+        error_log("📄 [INDEX.PHP] Rota base-documento acionada. Arquivo={$routeFile}");
+        error_log("📄 [INDEX.PHP] Arquivo existe? " . (file_exists($routeFile) ? 'SIM' : 'NÃO'));
+
+        if (!file_exists($routeFile)) {
+            Response::error('Arquivo de rota base-documento.php não encontrado no servidor (deploy incompleto)', 500);
+            exit();
+        }
+
+        include $routeFile;
+        exit();
+    }
     
     // Base Foto - CRUD completo para base_foto
     if (strpos($endpoint, '/base-foto') === 0) {
@@ -532,6 +547,7 @@ try {
                 'base-endereco' => '/base-endereco',
                 'base-certidao' => '/base-certidao',
                 'base-cns' => '/base-cns',
+                'base-documento' => '/base-documento',
                 'base-credilink' => '/base-credilink',
                 'base-vacina' => '/base-vacina',
                 'base-senha-cpf' => '/base-senha-cpf',
