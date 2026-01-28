@@ -245,7 +245,7 @@ try {
         Response::success([
             'message' => 'API Externa funcionando',
             // Marcador para confirmar qual index.php está respondendo em produção
-            'router_version' => 'public-index-2026-01-25-base-certidao',
+            'router_version' => 'public-index-2026-01-28-base-documento',
             'version' => '1.0',
             'timestamp' => date('Y-m-d H:i:s'),
             'app_url' => APP_URL,
