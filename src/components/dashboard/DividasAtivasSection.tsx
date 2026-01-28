@@ -97,7 +97,7 @@ const DividasAtivasSection: React.FC<DividasAtivasSectionProps> = ({ cpf }) => {
               <AlertTriangle className="h-5 w-5" />
               Dívidas Ativas (SIDA)
             </CardTitle>
-            <div className="flex items-center justify-center w-8 h-8 bg-green-500 text-white rounded-full text-sm font-bold">
+            <div className="flex items-center justify-center w-8 h-8 bg-success text-success-foreground rounded-full text-sm font-bold">
               {dividasAtivas.length}
             </div>
           </div>
