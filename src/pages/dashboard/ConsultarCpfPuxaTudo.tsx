@@ -2829,10 +2829,6 @@ Todos os direitos reservados.`;
           {/* CNS */}
           <CnsSection cpfId={result.id} />
 
-          {/* Gestão Cadastral */}
-          <GestaoSection cpfId={result.id} />
-          
-
           {/* PIS */}
           <PisSection pis={result.pis} />
 
@@ -2899,6 +2895,9 @@ Todos os direitos reservados.`;
 
           {/* Boletim de Ocorrência */}
           <BoletimOcorrenciaSection cpfId={result.id} />
+
+          {/* Gestão Cadastral */}
+          <GestaoSection cpfId={result.id} />
 
 
         </div>
