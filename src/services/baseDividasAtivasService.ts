@@ -4,7 +4,15 @@ import { getFullApiUrl } from '@/utils/apiHelper';
 export interface BaseDividasAtivas {
   id?: number;
   cpf_id: string;
+  /**
+   * @deprecated Campo legado (não existe mais no novo schema do banco).
+   * Mantido apenas para compatibilidade com telas antigas de cadastro.
+   */
   tipo_devedor?: string;
+  /**
+   * @deprecated Campo legado (não existe mais no novo schema do banco).
+   * Mantido apenas para compatibilidade com telas antigas de cadastro.
+   */
   nome_devedor?: string;
   uf_devedor?: string;
   numero_inscricao?: string;
@@ -15,6 +23,9 @@ export interface BaseDividasAtivas {
   indicador_ajuizado?: string;
   valor_consolidado?: number;
   created_at?: string;
+  /**
+   * @deprecated Nem todo schema retorna updated_at.
+   */
   updated_at?: string;
 }
 

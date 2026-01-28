@@ -53,8 +53,6 @@ const DividasAtivasSection: React.FC<DividasAtivasSectionProps> = ({ cpf }) => {
     
     const dados = dividasAtivas.map((divida, idx) => 
       `Dívida ${idx + 1}:\n` +
-      `Tipo Devedor: ${divida.tipo_devedor || '-'}\n` +
-      `Nome Devedor: ${divida.nome_devedor || '-'}\n` +
       `UF: ${divida.uf_devedor || '-'}\n` +
       `Número Inscrição: ${divida.numero_inscricao || '-'}\n` +
       `Tipo Situação: ${divida.tipo_situacao_inscricao || '-'}\n` +
@@ -173,26 +171,6 @@ const DividasAtivasSection: React.FC<DividasAtivasSectionProps> = ({ cpf }) => {
           <div key={divida.id || index}>
             {index > 0 && <div className="border-t pt-3"></div>}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div>
-                <Label htmlFor={`tipo_devedor_${divida.id}`}>Tipo Devedor</Label>
-                <Input
-                  id={`tipo_devedor_${divida.id}`}
-                  value={divida.tipo_devedor || '-'}
-                  disabled
-                  className="bg-muted uppercase text-[14px] md:text-sm"
-                />
-              </div>
-              
-              <div className="md:col-span-2">
-                <Label htmlFor={`nome_devedor_${divida.id}`}>Nome Devedor</Label>
-                <Input
-                  id={`nome_devedor_${divida.id}`}
-                  value={divida.nome_devedor || '-'}
-                  disabled
-                  className="bg-muted uppercase text-[14px] md:text-sm"
-                />
-              </div>
-              
               <div>
                 <Label htmlFor={`uf_${divida.id}`}>UF Devedor</Label>
                 <Input
