@@ -2223,26 +2223,6 @@ Todos os direitos reservados.`;
             </CardHeader>
             <CardContent className="p-4 md:p-6 pt-3">
               <div className="flex flex-wrap gap-2">
-                {/* Badge para Senhas de Email */}
-                <a href="#senha-email-section" className="no-underline">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                  >
-                    Senhas de Email
-                  </Badge>
-                </a>
-                
-                {/* Badge para Senhas de CPF */}
-                <a href="#senha-cpf-section" className="no-underline">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                  >
-                    Senhas de CPF
-                  </Badge>
-                </a>
-                
                 {/* Badge para Fotos */}
                 <a href="#fotos-section" className="no-underline">
                   <Badge 
@@ -2276,6 +2256,106 @@ Todos os direitos reservados.`;
                     </Badge>
                   </a>
                 )}
+                
+                {/* Badge para Parentes */}
+                <a href="#parentes-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Parentes
+                  </Badge>
+                </a>
+                
+                {/* Badge para Telefones */}
+                <a href="#telefones-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Telefones
+                  </Badge>
+                </a>
+                
+                {/* Badge para Emails */}
+                <a href="#emails-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Emails
+                  </Badge>
+                </a>
+                
+                {/* Badge para Endereços */}
+                <a href="#enderecos-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Endereços
+                  </Badge>
+                </a>
+                
+                {/* Badge para Vacina */}
+                <a href="#vacina-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Vacina COVID-19
+                  </Badge>
+                </a>
+                
+                {/* Badge para Empresas Sócio */}
+                <a href="#empresas-socio-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Empresas Sócio
+                  </Badge>
+                </a>
+                
+                {/* Badge para Operadora Vivo */}
+                <a href="#vivo-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Vivo
+                  </Badge>
+                </a>
+                
+                {/* Badge para Operadora Claro */}
+                <a href="#claro-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Claro
+                  </Badge>
+                </a>
+                
+                {/* Badge para Senhas de Email */}
+                <a href="#senha-email-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Senhas de Email
+                  </Badge>
+                </a>
+                
+                {/* Badge para Senhas de CPF */}
+                <a href="#senha-cpf-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Senhas de CPF
+                  </Badge>
+                </a>
               </div>
             </CardContent>
           </Card>
@@ -2481,13 +2561,19 @@ Todos os direitos reservados.`;
           </Card>
 
            {/* Telefones */}
-           <TelefonesSection cpfId={result.id} />
+           <div id="telefones-section">
+             <TelefonesSection cpfId={result.id} />
+           </div>
 
            {/* Emails */}
-           <EmailsSection cpfId={result.id} />
+           <div id="emails-section">
+             <EmailsSection cpfId={result.id} />
+           </div>
 
            {/* Endereços */}
-           <EnderecosSection cpfId={result.id} />
+           <div id="enderecos-section">
+             <EnderecosSection cpfId={result.id} />
+           </div>
 
           {/* Título de Eleitor */}
           <Card className={onlineCardClass(hasTituloEleitor)}>
@@ -2730,7 +2816,9 @@ Todos os direitos reservados.`;
           </Card>
 
           {/* Parentes */}
-          <ParentesSection cpfId={result.id} />
+          <div id="parentes-section">
+            <ParentesSection cpfId={result.id} />
+          </div>
 
           {/* Cônjuge */}
           <PlaceholderSection title="Cônjuge" icon={Heart} />
@@ -2757,10 +2845,14 @@ Todos os direitos reservados.`;
 
 
           {/* Covid */}
-          <VacinaDisplay cpfId={result.id} />
+          <div id="vacina-section">
+            <VacinaDisplay cpfId={result.id} />
+          </div>
 
           {/* Empresas Associadas (SÓCIO) */}
-          <EmpresasSocioSection cpfId={result.id} />
+          <div id="empresas-socio-section">
+            <EmpresasSocioSection cpfId={result.id} />
+          </div>
 
           {/* CNPJ MEI */}
           <CnpjMeiSection cpfId={result.id} />
@@ -2778,10 +2870,14 @@ Todos os direitos reservados.`;
           <InssSection cpfId={result.id} />
 
           {/* Operadora Claro */}
-          <ClaroSection cpfId={result.id} />
+          <div id="claro-section">
+            <ClaroSection cpfId={result.id} />
+          </div>
 
           {/* Operadora Vivo */}
-          <VivoSection cpfId={result.id} />
+          <div id="vivo-section">
+            <VivoSection cpfId={result.id} />
+          </div>
 
           {/* Operadora Tim */}
           <OperadoraSection title="Operadora Tim" />
