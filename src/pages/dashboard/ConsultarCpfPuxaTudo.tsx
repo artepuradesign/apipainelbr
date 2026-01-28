@@ -2338,6 +2338,18 @@ Todos os direitos reservados.`;
                   </Badge>
                 </a>
                 
+                {/* Badge para RAIS - Histórico de Emprego */}
+                {rais && rais.length > 0 && (
+                  <a href="#rais-section" className="no-underline">
+                    <Badge 
+                      variant="secondary" 
+                      className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                    >
+                      RAIS - Histórico de Emprego
+                    </Badge>
+                  </a>
+                )}
+                
                 {/* Badge para Senhas de Email */}
                 <a href="#senha-email-section" className="no-underline">
                   <Badge 
@@ -2883,7 +2895,9 @@ Todos os direitos reservados.`;
           <AuxilioEmergencialSection auxilios={auxiliosEmergenciais} />
 
           {/* Rais - Histórico de Emprego */}
-          <RaisSection data={rais} isLoading={raisLoading} />
+          <div id="rais-section">
+            <RaisSection data={rais} isLoading={raisLoading} />
+          </div>
 
           {/* INSS */}
           <InssSection cpfId={result.id} />
