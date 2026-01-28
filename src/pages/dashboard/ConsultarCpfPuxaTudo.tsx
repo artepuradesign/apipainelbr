@@ -58,8 +58,8 @@ import DividasAtivasSection from '@/components/dashboard/DividasAtivasSection';
 import { AuxilioEmergencialSection } from '@/components/dashboard/AuxilioEmergencialSection';
 import { RaisSection } from '@/components/dashboard/RaisSection';
 import InssSection from '@/components/dashboard/InssSection';
-import OperadoraSection from '@/components/dashboard/OperadoraSection';
 import OperadoraOiSection from '@/components/dashboard/OperadoraOiSection';
+import OperadoraTimSection from '@/components/dashboard/OperadoraTimSection';
 import ClaroSection from '@/components/dashboard/ClaroSection';
 import VivoSection from '@/components/dashboard/VivoSection';
 import HistoricoVeiculoSection from '@/components/dashboard/HistoricoVeiculoSection';
@@ -2918,7 +2918,9 @@ Todos os direitos reservados.`;
           </div>
 
           {/* Operadora Tim */}
-          <OperadoraSection title="Operadora Tim" />
+          <div id="tim-section">
+            <OperadoraTimSection cpfId={result.id} />
+          </div>
 
           {/* Operadora OI */}
           <div id="oi-section">
