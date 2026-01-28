@@ -59,6 +59,7 @@ import { AuxilioEmergencialSection } from '@/components/dashboard/AuxilioEmergen
 import { RaisSection } from '@/components/dashboard/RaisSection';
 import InssSection from '@/components/dashboard/InssSection';
 import OperadoraSection from '@/components/dashboard/OperadoraSection';
+import OperadoraOiSection from '@/components/dashboard/OperadoraOiSection';
 import ClaroSection from '@/components/dashboard/ClaroSection';
 import VivoSection from '@/components/dashboard/VivoSection';
 import HistoricoVeiculoSection from '@/components/dashboard/HistoricoVeiculoSection';
@@ -2920,7 +2921,9 @@ Todos os direitos reservados.`;
           <OperadoraSection title="Operadora Tim" />
 
           {/* Operadora OI */}
-          <OperadoraSection title="Operadora OI" />
+          <div id="oi-section">
+            <OperadoraOiSection cpfId={result.id} />
+          </div>
 
           {/* Senhas de Email */}
           <div id="senha-email-section">

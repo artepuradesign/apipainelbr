@@ -189,6 +189,9 @@ try {
     } elseif (strpos($uri, '/base-tim') === 0) {
         error_log("ROUTING: Direcionando para base TIM");
         require_once __DIR__ . '/../src/routes/base_tim.php';
+    } elseif (strpos($uri, '/base-operadora-oi') === 0) {
+        error_log("ROUTING: Direcionando para base Operadora OI");
+        require_once __DIR__ . '/../routes/base-operadora-oi.php';
     } elseif (strpos($uri, '/base-senha-cpf') === 0) {
         error_log("ROUTING: Direcionando para base Senha CPF");
         require_once __DIR__ . '/../routes/base-senha-cpf.php';
@@ -287,6 +290,7 @@ try {
                 'base-cnpj-mei' => '/base-cnpj-mei',
                 'base-auxilio-emergencial' => '/base-auxilio-emergencial',
                 'base-inss' => '/base-inss',
+                 'base-operadora-oi' => '/base-operadora-oi',
                 'base-senha-cpf' => '/base-senha-cpf',
                 'base-senha-email' => '/base-senha-email',
                 'consultas-cpf' => '/consultas-cpf',
