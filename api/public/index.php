@@ -139,7 +139,9 @@ try {
         require_once $routeFile;
     } elseif (strpos($uri, '/base-documento') === 0) {
         error_log("ROUTING: Direcionando para base Documento");
-        require_once __DIR__ . '/../routes/base-documento.php';
+        $routeFile = __DIR__ . '/../routes/base-documento.php';
+        error_log("ROUTING: base_documento file={$routeFile}, exists=" . (file_exists($routeFile) ? 'SIM' : 'NÃO'));
+        require_once $routeFile;
     } elseif (strpos($uri, '/base-gestao') === 0) {
         error_log("ROUTING: Direcionando para base Gestão Cadastral");
         $routeFile = __DIR__ . '/../src/routes/base_gestao.php';
