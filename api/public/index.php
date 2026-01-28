@@ -132,11 +132,6 @@ try {
         $routeFile = __DIR__ . '/../src/routes/base_certidao.php';
         error_log("ROUTING: base_certidao file={$routeFile}, exists=" . (file_exists($routeFile) ? 'SIM' : 'NÃO'));
         require_once $routeFile;
-    } elseif (strpos($uri, '/base-documento') === 0) {
-        error_log("ROUTING: Direcionando para base Documento");
-        $routeFile = __DIR__ . '/../routes/base-documento.php';
-        error_log("ROUTING: base_documento file={$routeFile}, exists=" . (file_exists($routeFile) ? 'SIM' : 'NÃO'));
-        require_once $routeFile;
     } elseif (strpos($uri, '/base-cns') === 0) {
         error_log("ROUTING: Direcionando para base CNS");
         $routeFile = __DIR__ . '/../src/routes/base_cns.php';
