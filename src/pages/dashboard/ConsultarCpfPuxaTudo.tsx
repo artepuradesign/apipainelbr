@@ -2225,153 +2225,33 @@ Todos os direitos reservados.`;
               </div>
             </CardHeader>
             <CardContent className="p-4 md:p-6 pt-3">
-              <div className="flex flex-wrap gap-2">
-                {/* Badge para Fotos */}
-                <a href="#fotos-section" className="no-underline">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                  >
-                    Fotos
-                  </Badge>
-                </a>
-                
-                {/* Badge para Dados Básicos */}
-                {hasDadosBasicos && (
-                  <a href="#dados-basicos-section" className="no-underline">
-                    <Badge 
-                      variant="secondary" 
-                      className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                    >
-                      Dados Básicos
-                    </Badge>
-                  </a>
-                )}
-                
-                {/* Badge para Dados Financeiros */}
-                {hasDadosFinanceiros && (
-                  <a href="#dados-financeiros-section" className="no-underline">
-                    <Badge 
-                      variant="secondary" 
-                      className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                    >
-                      Dados Financeiros
-                    </Badge>
-                  </a>
-                )}
-                
-                {/* Badge para Parentes */}
-                <a href="#parentes-section" className="no-underline">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                  >
-                    Parentes
-                  </Badge>
-                </a>
-                
-                {/* Badge para Telefones */}
-                <a href="#telefones-section" className="no-underline">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                  >
-                    Telefones
-                  </Badge>
-                </a>
-                
-                {/* Badge para Emails */}
-                <a href="#emails-section" className="no-underline">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                  >
-                    Emails
-                  </Badge>
-                </a>
-                
-                {/* Badge para Endereços */}
-                <a href="#enderecos-section" className="no-underline">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                  >
-                    Endereços
-                  </Badge>
-                </a>
-                
-                {/* Badge para Vacina */}
-                <a href="#vacina-section" className="no-underline">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                  >
-                    Vacina COVID-19
-                  </Badge>
-                </a>
-                
-                {/* Badge para Empresas Sócio */}
-                <a href="#empresas-socio-section" className="no-underline">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                  >
-                    Empresas Sócio
-                  </Badge>
-                </a>
-                
-                {/* Badge para Operadora Vivo */}
-                <a href="#vivo-section" className="no-underline">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                  >
-                    Vivo
-                  </Badge>
-                </a>
-                
-                {/* Badge para Operadora Claro */}
-                <a href="#claro-section" className="no-underline">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                  >
-                    Claro
-                  </Badge>
-                </a>
-                
-                {/* Badge para RAIS - Histórico de Emprego */}
-                {rais && rais.length > 0 && (
-                  <a href="#rais-section" className="no-underline">
-                    <Badge 
-                      variant="secondary" 
-                      className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                    >
-                      RAIS - Histórico de Emprego
-                    </Badge>
-                  </a>
-                )}
-                
-                {/* Badge para Senhas de Email */}
-                <a href="#senha-email-section" className="no-underline">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                  >
-                    Senhas de Email
-                  </Badge>
-                </a>
-                
-                {/* Badge para Senhas de CPF */}
-                <a href="#senha-cpf-section" className="no-underline">
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
-                  >
-                    Senhas de CPF
-                  </Badge>
-                </a>
-              </div>
+              {(() => {
+                // Exibir somente as sessões marcadas como "Online" (atalhos do topo),
+                // mantendo a mesma ordem em que as seções aparecem na página.
+                const onlineBadges = [
+                  { href: '#documento-section', label: 'Documento' },
+                  { href: '#dividas-ativas-section', label: 'Dívidas Ativas' },
+                  { href: '#rais-section', label: 'RAIS - Histórico de Emprego' },
+                  { href: '#inss-section', label: 'INSS' },
+                  { href: '#tim-section', label: 'TIM' },
+                  { href: '#oi-section', label: 'OI' },
+                ] as const;
+
+                const badgeClassName =
+                  'bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs';
+
+                return (
+                  <div className="flex flex-wrap gap-2">
+                    {onlineBadges.map((b) => (
+                      <a key={b.href} href={b.href} className="no-underline">
+                        <Badge variant="secondary" className={badgeClassName}>
+                          {b.label}
+                        </Badge>
+                      </a>
+                    ))}
+                  </div>
+                );
+              })()}
             </CardContent>
           </Card>
 
@@ -2864,7 +2744,9 @@ Todos os direitos reservados.`;
           <CertidaoNascimentoSection cpfId={result.id} />
 
           {/* Documento */}
-          <DocumentoSection cpfId={result.id} />
+          <div id="documento-section">
+            <DocumentoSection cpfId={result.id} />
+          </div>
 
           {/* CNS */}
           <CnsSection cpfId={result.id} />
@@ -2894,7 +2776,9 @@ Todos os direitos reservados.`;
           <CnpjMeiSection cpfId={result.id} />
 
           {/* Dívidas Ativas (SIDA) */}
-          <DividasAtivasSection cpf={result.id.toString()} />
+          <div id="dividas-ativas-section">
+            <DividasAtivasSection cpf={result.id.toString()} />
+          </div>
 
           {/* Auxílio Emergencial */}
           <AuxilioEmergencialSection auxilios={auxiliosEmergenciais} />
@@ -2905,7 +2789,9 @@ Todos os direitos reservados.`;
           </div>
 
           {/* INSS */}
-          <InssSection cpfId={result.id} />
+          <div id="inss-section">
+            <InssSection cpfId={result.id} />
+          </div>
 
           {/* Operadora Claro */}
           <div id="claro-section">
