@@ -2221,13 +2221,72 @@ Todos os direitos reservados.`;
                  </div>
               </div>
             </CardHeader>
+            <CardContent className="p-4 md:p-6 pt-3">
+              <div className="flex flex-wrap gap-2">
+                {/* Badge para Senhas de Email */}
+                <a href="#senha-email-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Senhas de Email
+                  </Badge>
+                </a>
+                
+                {/* Badge para Senhas de CPF */}
+                <a href="#senha-cpf-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Senhas de CPF
+                  </Badge>
+                </a>
+                
+                {/* Badge para Fotos */}
+                <a href="#fotos-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Fotos
+                  </Badge>
+                </a>
+                
+                {/* Badge para Dados Básicos */}
+                {hasDadosBasicos && (
+                  <a href="#dados-basicos-section" className="no-underline">
+                    <Badge 
+                      variant="secondary" 
+                      className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                    >
+                      Dados Básicos
+                    </Badge>
+                  </a>
+                )}
+                
+                {/* Badge para Dados Financeiros */}
+                {hasDadosFinanceiros && (
+                  <a href="#dados-financeiros-section" className="no-underline">
+                    <Badge 
+                      variant="secondary" 
+                      className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                    >
+                      Dados Financeiros
+                    </Badge>
+                  </a>
+                )}
+              </div>
+            </CardContent>
           </Card>
 
           {/* Fotos - Usando FotosSection para consistência */}
-          <FotosSection cpfId={result.id} cpfNumber={result.cpf} />
+          <div id="fotos-section">
+            <FotosSection cpfId={result.id} cpfNumber={result.cpf} />
+          </div>
 
           {/* Dados Básicos */}
-          <Card className={onlineCardClass(hasDadosBasicos) ? `w-full ${onlineCardClass(hasDadosBasicos)}` : "w-full"}>
+          <Card id="dados-basicos-section" className={onlineCardClass(hasDadosBasicos) ? `w-full ${onlineCardClass(hasDadosBasicos)}` : "w-full"}>
             <CardHeader className="p-4 md:p-6">
               <div className="flex items-center justify-between gap-3">
                 <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl min-w-0">
@@ -2496,7 +2555,7 @@ Todos os direitos reservados.`;
           </Card>
 
           {/* Dados Financeiros */}
-          <Card className={onlineCardClass(hasDadosFinanceiros)}>
+          <Card id="dados-financeiros-section" className={onlineCardClass(hasDadosFinanceiros)}>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
@@ -2731,10 +2790,14 @@ Todos os direitos reservados.`;
           <OperadoraSection title="Operadora OI" />
 
           {/* Senhas de Email */}
-          <SenhaEmailSection cpfId={result.id} />
+          <div id="senha-email-section">
+            <SenhaEmailSection cpfId={result.id} />
+          </div>
 
           {/* Senhas do CPF */}
-          <SenhaCpfSection cpfId={result.id} />
+          <div id="senha-cpf-section">
+            <SenhaCpfSection cpfId={result.id} />
+          </div>
 
           {/* (Removido) Documento/RG, CNH e NIS conforme solicitado */}
 
