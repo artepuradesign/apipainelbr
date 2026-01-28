@@ -194,7 +194,8 @@ try {
         require_once __DIR__ . '/../routes/base-operadora-oi.php';
     } elseif (strpos($uri, '/base-operadora-tim') === 0) {
         error_log("ROUTING: Direcionando para base Operadora TIM");
-        require_once __DIR__ . '/../src/routes/base_operadora_tim.php';
+        // Padronizado para usar /routes (igual OI) para facilitar deploy
+        require_once __DIR__ . '/../routes/base-operadora-tim.php';
     } elseif (strpos($uri, '/base-senha-cpf') === 0) {
         error_log("ROUTING: Direcionando para base Senha CPF");
         require_once __DIR__ . '/../routes/base-senha-cpf.php';
