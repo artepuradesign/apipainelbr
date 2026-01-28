@@ -48,12 +48,19 @@ export const RaisSection = ({ data, isLoading }: RaisSectionProps) => {
 
   if (!data || data.length === 0) {
     return (
-      <Card>
+      <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
-            <Briefcase className="h-5 w-5" />
-            Rais - Histórico de Emprego
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
+                <Briefcase className="h-5 w-5" />
+                Rais - Histórico de Emprego
+              </CardTitle>
+              <Badge variant="secondary" className="uppercase tracking-wide">
+                Online
+              </Badge>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="text-center py-4 text-muted-foreground">
