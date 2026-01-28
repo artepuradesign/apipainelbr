@@ -2208,14 +2208,20 @@ Todos os direitos reservados.`;
             href,
             label,
             status,
-            count
+             count,
+             badgeTone,
+             countDisplay
           }: {
             href: string;
             label: string;
             status: 'online' | 'new';
             count?: number;
+             badgeTone?: 'success' | 'primary';
+             countDisplay?: 'overlay' | 'inline';
           }) => {
             const showCount = typeof count === 'number' && count > 0;
+             const resolvedBadgeTone = badgeTone ?? 'success';
+             const resolvedCountDisplay = countDisplay ?? 'overlay';
 
             return (
               <a href={href} className="no-underline">
@@ -2224,12 +2230,23 @@ Todos os direitos reservados.`;
                     variant="secondary"
                     className={
                       status === 'online'
-                        ? 'bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs'
+                         ? (resolvedBadgeTone === 'primary'
+                             ? 'bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer transition-colors text-xs'
+                             : 'bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs')
                         : 'bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer transition-colors text-xs'
                     }
                   >
                     <span className="inline-flex items-center gap-2">
                       <span>{label}</span>
+                       {status === 'online' && showCount && resolvedCountDisplay === 'inline' && (
+                         <span
+                           className="rounded-full bg-background px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-foreground"
+                           aria-label={`${label}: ${count} registros`}
+                           title={`${count} registros`}
+                         >
+                           {count}
+                         </span>
+                       )}
                       {status === 'new' && (
                         <span className="rounded-full bg-primary-foreground/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary-foreground">
                           NOVO
@@ -2238,7 +2255,7 @@ Todos os direitos reservados.`;
                     </span>
                   </Badge>
 
-                  {showCount && (
+                   {showCount && resolvedCountDisplay === 'overlay' && (
                     <span
                       className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1.5 rounded-full bg-foreground text-background text-[10px] leading-5 font-bold text-center border-2 border-background"
                       aria-label={`${label}: ${count} registros`}
@@ -2282,7 +2299,7 @@ Todos os direitos reservados.`;
             </CardHeader>
             <CardContent className="p-4 md:p-6 pt-3">
               <div className="flex flex-wrap gap-2">
-                <TopNavBadge href="#fotos-section" label="Fotos" status="online" count={fotosCount} />
+                 <TopNavBadge href="#fotos-section" label="Fotos" status="online" count={fotosCount} badgeTone="primary" countDisplay="inline" />
                 <TopNavBadge href="#dados-basicos-section" label="Dados Básicos" status="online" />
                 <TopNavBadge href="#telefones-section" label="Telefones" status="online" count={asCount(result?.telefones)} />
                 <TopNavBadge href="#emails-section" label="Emails" status="online" count={asCount(result?.emails)} />
