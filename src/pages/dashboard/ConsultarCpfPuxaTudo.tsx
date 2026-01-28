@@ -2017,14 +2017,14 @@ Todos os direitos reservados.`;
 
             {/* Modal de Verificação */}
             <Dialog open={verificationLoadingOpen} onOpenChange={setVerificationLoadingOpen}>
-              <DialogContent className="sm:max-w-[360px]">
+              <DialogContent className="sm:max-w-[320px]">
                 <DialogHeader>
                   <DialogTitle className="text-center">Processando Consulta</DialogTitle>
                   <DialogDescription className="text-center">
                     {verificationPhase === 'retry'
                       ? 'Ainda processando... aguardando mais 5s para tentar novamente.'
                       : verificationPhase === 'initial'
-                        ? 'Enviado para processamento externo. Aguarde 10s para cadastrar no banco.'
+                        ? 'Aguarde a exibição das informações'
                         : 'Enviando CPF para processamento externo...'}
                   </DialogDescription>
                 </DialogHeader>
@@ -2451,13 +2451,16 @@ Todos os direitos reservados.`;
                         ? 'Masculino'
                         : result.sexo.toLowerCase() === 'f'
                           ? 'Feminino'
-                          : result.sexo)
+                          : result.sexo.toLowerCase() === 'i'
+                            ? 'Indefinido'
+                            : result.sexo)
                       : '').toUpperCase()}
                     disabled
                      className="bg-muted text-[14px] md:text-sm"
                   />
                 </div>
 
+                {result.mae || result.nome_mae ? (
                 <div>
                   <Label className="text-xs sm:text-sm" htmlFor="mae">Nome da Mãe</Label>
                   <Input
@@ -2467,7 +2470,9 @@ Todos os direitos reservados.`;
                      className="bg-muted uppercase text-[14px] md:text-sm"
                   />
                 </div>
+                ) : null}
 
+                {result.pai || result.nome_pai ? (
                 <div>
                   <Label className="text-xs sm:text-sm" htmlFor="pai">Nome do Pai</Label>
                   <Input
@@ -2477,7 +2482,9 @@ Todos os direitos reservados.`;
                      className="bg-muted uppercase text-[14px] md:text-sm"
                   />
                 </div>
+                ) : null}
 
+                {result.estado_civil ? (
                 <div>
                   <Label className="text-xs sm:text-sm" htmlFor="estado_civil">Estado Civil</Label>
                   <Input
@@ -2487,7 +2494,9 @@ Todos os direitos reservados.`;
                      className="bg-muted uppercase text-[14px] md:text-sm"
                   />
                 </div>
+                ) : null}
 
+                {result.rg ? (
                 <div>
                   <Label className="text-xs sm:text-sm" htmlFor="rg">RG</Label>
                   <Input
@@ -2497,7 +2506,9 @@ Todos os direitos reservados.`;
                      className="bg-muted uppercase text-[14px] md:text-sm"
                   />
                 </div>
+                ) : null}
 
+                {result.cbo ? (
                 <div>
                   <Label className="text-xs sm:text-sm" htmlFor="cbo">CBO</Label>
                   <Input
@@ -2507,7 +2518,9 @@ Todos os direitos reservados.`;
                      className="bg-muted uppercase text-[14px] md:text-sm"
                   />
                 </div>
+                ) : null}
 
+                {result.orgao_emissor ? (
                 <div>
                   <Label className="text-xs sm:text-sm" htmlFor="orgao_emissor">Órgão Emissor</Label>
                   <Input
@@ -2517,7 +2530,9 @@ Todos os direitos reservados.`;
                      className="bg-muted uppercase text-[14px] md:text-sm"
                   />
                 </div>
+                ) : null}
 
+                {result.uf_emissao ? (
                 <div>
                   <Label className="text-xs sm:text-sm" htmlFor="uf_emissao">UF Emissor</Label>
                   <Input
@@ -2527,7 +2542,9 @@ Todos os direitos reservados.`;
                      className="bg-muted uppercase text-[14px] md:text-sm"
                   />
                 </div>
+                ) : null}
 
+                {result.data_obito ? (
                 <div>
                   <Label className="text-xs sm:text-sm" htmlFor="data_obito">Data Óbito</Label>
                   <Input
@@ -2537,7 +2554,9 @@ Todos os direitos reservados.`;
                      className="bg-muted text-[14px] md:text-sm"
                   />
                 </div>
+                ) : null}
 
+                {result.renda ? (
                 <div>
                   <Label className="text-xs sm:text-sm" htmlFor="renda_basicos">Renda</Label>
                   <Input
@@ -2547,7 +2566,9 @@ Todos os direitos reservados.`;
                      className="bg-muted text-[14px] md:text-sm"
                   />
                 </div>
+                ) : null}
 
+                {result.titulo_eleitor ? (
                 <div>
                   <Label className="text-xs sm:text-sm" htmlFor="titulo_eleitor_basicos">Título de Eleitor</Label>
                   <Input
@@ -2557,6 +2578,7 @@ Todos os direitos reservados.`;
                      className="bg-muted uppercase text-[14px] md:text-sm"
                   />
                 </div>
+                ) : null}
               </div>
             </CardContent>
           </Card>
