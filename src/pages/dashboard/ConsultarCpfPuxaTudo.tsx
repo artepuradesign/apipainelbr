@@ -2199,8 +2199,26 @@ Todos os direitos reservados.`;
 
           const asCount = (value: unknown): number => {
             if (!value) return 0;
+
             if (Array.isArray(value)) return value.length;
-            if (typeof value === 'object') return 1;
+
+            // Handle common API shapes like { data: [], total: n } or { fotos: [] }
+            if (typeof value === 'object') {
+              const v = value as any;
+
+              if (typeof v.total === 'number') return v.total;
+
+              if (Array.isArray(v.data)) return v.data.length;
+              if (v.data && typeof v.data === 'object') {
+                if (typeof v.data.total === 'number') return v.data.total;
+                if (Array.isArray(v.data.data)) return v.data.data.length;
+              }
+
+              if (Array.isArray(v.fotos)) return v.fotos.length;
+
+              return 1;
+            }
+
             return 1;
           };
 
@@ -2257,7 +2275,12 @@ Todos os direitos reservados.`;
             );
           };
 
-          const fotosCount = [result?.foto_doc_rg, result?.foto_doc_cnh].filter(Boolean).length;
+          const fotosCount = [
+            result?.foto_doc_rg,
+            result?.foto_doc_cnh,
+            result?.foto,
+            result?.foto2,
+          ].filter(Boolean).length;
         
         return (
         <div ref={resultRef} className="space-y-6 w-full max-w-full overflow-hidden">
@@ -2294,7 +2317,7 @@ Todos os direitos reservados.`;
                 <TopNavBadge href="#enderecos-section" label="Endereços" status="online" count={asCount(result?.enderecos)} />
                 <TopNavBadge href="#titulo-eleitor-section" label="Título de Eleitor" status="online" count={result?.titulo_eleitor ? 1 : 0} />
 
-                <TopNavBadge href="#dados-financeiros-section" label="Dados Financeiros" status="online" />
+                <TopNavBadge href="#dados-financeiros-section" label="Dados Financeiros" status="online" count={hasDadosFinanceiros ? 1 : 0} />
                 <TopNavBadge href="#score-section" label="Score" status="online" count={result?.score ? 1 : 0} />
                 <TopNavBadge href="#parentes-section" label="Parentes" status="online" count={asCount(result?.parentes)} />
 
