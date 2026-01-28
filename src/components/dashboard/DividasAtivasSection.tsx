@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, Loader2, Copy } from 'lucide-react';
 import { useBaseDividasAtivas } from '@/hooks/useBaseDividasAtivas';
 import { toast } from "sonner";
@@ -12,16 +13,33 @@ interface DividasAtivasSectionProps {
 }
 
 const DividasAtivasSection: React.FC<DividasAtivasSectionProps> = ({ cpf }) => {
-  const { getDividasAtivasByCpf, dividasAtivas, isLoading } = useBaseDividasAtivas();
+  const { getDividasAtivasByCpf, dividasAtivas, isLoading, clearData } = useBaseDividasAtivas();
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const lastCpfRef = useRef<string | null>(null);
 
-  const hasData = (dividasAtivas?.length || 0) > 0;
+  const hasData = useMemo(() => (dividasAtivas?.length ?? 0) > 0, [dividasAtivas?.length]);
+  const sectionCardClass = useMemo(
+    () => (hasData ? 'border-success-border bg-success-subtle' : undefined),
+    [hasData]
+  );
+
+  // Se o CPF mudar, resetar para disparar nova busca (mesmo padrão do CNPJ MEI)
+  useEffect(() => {
+    if (!cpf) return;
+
+    if (lastCpfRef.current !== cpf) {
+      lastCpfRef.current = cpf;
+      setDataLoaded(false);
+      clearData();
+    }
+  }, [cpf, clearData]);
 
   useEffect(() => {
-    if (cpf) {
+    if (cpf && !dataLoaded) {
       console.log('🔄 [DIVIDAS_ATIVAS_SECTION] Buscando dados para CPF ID:', cpf);
-      getDividasAtivasByCpf(cpf);
+      getDividasAtivasByCpf(cpf).finally(() => setDataLoaded(true));
     }
-  }, [cpf, getDividasAtivasByCpf]);
+  }, [cpf, getDividasAtivasByCpf, dataLoaded]);
 
   console.log('🔍 [DIVIDAS_ATIVAS_SECTION] Estado atual:', {
     cpf,
@@ -53,12 +71,25 @@ const DividasAtivasSection: React.FC<DividasAtivasSectionProps> = ({ cpf }) => {
 
   if (isLoading) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
-            <AlertTriangle className="h-5 w-5" />
-            Dívidas Ativas (SIDA)
-          </CardTitle>
+      <Card className={sectionCardClass}>
+        <CardHeader className="p-4 md:p-6">
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
+                <AlertTriangle className="h-5 w-5 flex-shrink-0" />
+                <span className="truncate">Dívidas Ativas (SIDA)</span>
+              </CardTitle>
+            </div>
+
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Badge
+                variant="secondary"
+                className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
+              >
+                Online
+              </Badge>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center py-8">
@@ -71,12 +102,22 @@ const DividasAtivasSection: React.FC<DividasAtivasSectionProps> = ({ cpf }) => {
 
   if (!dividasAtivas || dividasAtivas.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
-            <AlertTriangle className="h-5 w-5" />
-            Dívidas Ativas (SIDA)
-          </CardTitle>
+      <Card className={sectionCardClass}>
+        <CardHeader className="p-4 md:p-6">
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
+                <AlertTriangle className="h-5 w-5 flex-shrink-0" />
+                <span className="truncate">Dívidas Ativas (SIDA)</span>
+              </CardTitle>
+            </div>
+
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Badge variant="secondary" className="uppercase tracking-wide">
+                Online
+              </Badge>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center py-8 text-center">
@@ -89,27 +130,42 @@ const DividasAtivasSection: React.FC<DividasAtivasSectionProps> = ({ cpf }) => {
   }
 
   return (
-    <Card className={hasData ? "border-success-border bg-success-subtle" : undefined}>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+    <Card className={sectionCardClass}>
+      <CardHeader className="p-4 md:p-6">
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
             <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
-              <AlertTriangle className="h-5 w-5" />
-              Dívidas Ativas (SIDA)
+              <AlertTriangle className="h-5 w-5 flex-shrink-0" />
+              <span className="truncate">Dívidas Ativas (SIDA)</span>
             </CardTitle>
-            <div className="flex items-center justify-center w-8 h-8 bg-success text-success-foreground rounded-full text-sm font-bold">
-              {dividasAtivas.length}
-            </div>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={copyDividasData}
-            className="h-8 w-8"
-            title="Copiar dados da seção"
-          >
-            <Copy className="h-4 w-4" />
-          </Button>
+
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <Badge
+              variant="secondary"
+              className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
+            >
+              Online
+            </Badge>
+
+            {hasData && (
+              <Badge variant="secondary" className="bg-success text-success-foreground">
+                {dividasAtivas.length}
+              </Badge>
+            )}
+
+            {hasData && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={copyDividasData}
+                className="h-8 w-8"
+                title="Copiar dados da seção"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
