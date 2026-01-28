@@ -77,6 +77,7 @@ import { getFullApiUrl } from '@/utils/apiHelper';
 import { atitoConsultaCpfService } from '@/services/atitoConsultaCpfService';
 import SectionActionButtons from '@/components/dashboard/SectionActionButtons';
 import PisSection from '@/components/dashboard/PisSection';
+import ScrollToTop from '@/components/ui/scroll-to-top';
 
 // Função melhorada para consultar CPF e registrar com debug robusto
 const consultarCPFComRegistro = async (cpf: string, cost: number, metadata: any) => {
@@ -3266,6 +3267,9 @@ Todos os direitos reservados.`;
           </AlertDialogHeader>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Scroll to Top Button */}
+      <ScrollToTop />
     </div>
   );
 };
