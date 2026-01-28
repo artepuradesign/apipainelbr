@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -65,7 +66,7 @@ export const RaisSection = ({ data, isLoading }: RaisSectionProps) => {
   }
 
   return (
-    <Card>
+    <Card className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -73,6 +74,9 @@ export const RaisSection = ({ data, isLoading }: RaisSectionProps) => {
               <Briefcase className="h-5 w-5" />
               Rais - Histórico de Emprego
             </CardTitle>
+            <Badge variant="secondary" className="uppercase tracking-wide">
+              Online
+            </Badge>
             <div className="flex items-center justify-center w-8 h-8 bg-green-500 text-white rounded-full text-sm font-bold">
               {data.length}
             </div>
