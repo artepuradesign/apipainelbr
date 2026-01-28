@@ -30,11 +30,19 @@ export interface ApiResponse<T = any> {
 class BaseDividasAtivasService {
   private getHeaders() {
     const token = cookieUtils.get('session_token') || cookieUtils.get('api_session_token');
-    return {
+
+    // Importante:
+    // - Não enviar X-API-Key aqui evita preflight/CORS em alguns ambientes.
+    // - Só enviar Authorization quando houver token válido evita "Bearer null".
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-      'X-API-Key': 'bG92YWJsZS5kZXY='
     };
+
+    if (token && token !== 'null' && token !== 'undefined') {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    return headers;
   }
 
   private async request<T>(method: string, endpoint: string, data?: any): Promise<ApiResponse<T>> {
