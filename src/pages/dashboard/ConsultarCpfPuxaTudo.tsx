@@ -2208,14 +2208,20 @@ Todos os direitos reservados.`;
             href,
             label,
             status,
-            count
+            count,
+            alwaysShow
           }: {
             href: string;
             label: string;
             status: 'online' | 'new';
             count?: number;
+            alwaysShow?: boolean;
           }) => {
             const showCount = typeof count === 'number' && count > 0;
+            // Mantém o comportamento atual (sempre renderiza), mas deixa explícito o caso do "sempre mostrar"
+            const shouldShow = Boolean(alwaysShow) || status === 'online' || status === 'new' || showCount;
+
+            if (!shouldShow) return null;
 
             return (
               <a href={href} className="no-underline">
@@ -2225,22 +2231,21 @@ Todos os direitos reservados.`;
                     className={
                       status === 'online'
                         ? 'bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs'
-                        : 'bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer transition-colors text-xs'
+                        : 'bg-muted text-foreground hover:bg-muted/80 cursor-pointer transition-colors text-xs'
                     }
                   >
                     <span className="inline-flex items-center gap-2">
                       <span>{label}</span>
-                      {status === 'new' && (
-                        <span className="rounded-full bg-primary-foreground/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary-foreground">
-                          NOVO
-                        </span>
-                      )}
                     </span>
                   </Badge>
 
                   {showCount && (
                     <span
-                      className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1.5 rounded-full bg-foreground text-background text-[10px] leading-5 font-bold text-center border-2 border-background"
+                      className={
+                        status === 'online'
+                          ? 'absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1.5 rounded-full bg-background text-foreground text-[10px] leading-5 font-bold text-center border-2 border-background'
+                          : 'absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1.5 rounded-full bg-success text-success-foreground text-[10px] leading-5 font-bold text-center border-2 border-background'
+                      }
                       aria-label={`${label}: ${count} registros`}
                       title={`${count} registros`}
                     >
@@ -2283,7 +2288,7 @@ Todos os direitos reservados.`;
             <CardContent className="p-4 md:p-6 pt-3">
               <div className="flex flex-wrap gap-2">
                 <TopNavBadge href="#fotos-section" label="Fotos" status="online" count={fotosCount} />
-                <TopNavBadge href="#dados-basicos-section" label="Dados Básicos" status="online" />
+                <TopNavBadge href="#dados-basicos-section" label="Dados Básicos" status="online" alwaysShow />
                 <TopNavBadge href="#telefones-section" label="Telefones" status="online" count={asCount(result?.telefones)} />
                 <TopNavBadge href="#emails-section" label="Emails" status="online" count={asCount(result?.emails)} />
                 <TopNavBadge href="#enderecos-section" label="Endereços" status="online" count={asCount(result?.enderecos)} />
@@ -2293,13 +2298,13 @@ Todos os direitos reservados.`;
                 <TopNavBadge href="#score-section" label="Score" status="online" count={result?.score ? 1 : 0} />
                 <TopNavBadge href="#parentes-section" label="Parentes" status="online" count={asCount(result?.parentes)} />
 
-                <TopNavBadge href="#conjuge-section" label="Cônjuge" status="new" />
+                <TopNavBadge href="#conjuge-section" label="Cônjuge" status="new" count={asCount((result as any)?.conjuge)} />
                 <TopNavBadge href="#certidao-nascimento-section" label="Certidão" status="online" />
                 <TopNavBadge href="#documento-section" label="Documento" status="online" />
                 <TopNavBadge href="#cns-section" label="CNS" status="online" />
                 <TopNavBadge href="#pis-section" label="PIS" status="online" count={result?.pis ? 1 : 0} />
                 <TopNavBadge href="#historico-veiculos-section" label="Histórico Veículos" status="online" />
-                <TopNavBadge href="#ultimos-veiculos-section" label="Últimos Veículos" status="new" />
+                <TopNavBadge href="#ultimos-veiculos-section" label="Últimos Veículos" status="new" count={asCount((result as any)?.ultimos_veiculos)} />
 
                 <TopNavBadge href="#vacina-section" label="Vacina COVID-19" status="online" count={asCount(result?.vacinas_covid)} />
                 <TopNavBadge href="#empresas-socio-section" label="Empresas Sócio" status="online" count={asCount(result?.empresas_socio)} />
@@ -2311,8 +2316,8 @@ Todos os direitos reservados.`;
 
                 <TopNavBadge href="#claro-section" label="Claro" status="online" count={asCount(result?.operadora_claro)} />
                 <TopNavBadge href="#vivo-section" label="Vivo" status="online" count={asCount(result?.operadora_vivo)} />
-                <TopNavBadge href="#operadora-tim-section" label="Tim" status="new" />
-                <TopNavBadge href="#operadora-oi-section" label="OI" status="new" />
+                <TopNavBadge href="#operadora-tim-section" label="Tim" status="new" count={asCount((result as any)?.operadora_tim)} />
+                <TopNavBadge href="#operadora-oi-section" label="OI" status="new" count={asCount((result as any)?.operadora_oi)} />
 
                 <TopNavBadge href="#senha-email-section" label="Senhas Email" status="online" count={asCount(result?.senhas_vazadas_email)} />
                 <TopNavBadge href="#senha-cpf-section" label="Senhas CPF" status="online" count={asCount(result?.senhas_vazadas_cpf)} />
