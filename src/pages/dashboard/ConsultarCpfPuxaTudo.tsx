@@ -67,6 +67,7 @@ import SenhaCpfSection from '@/components/dashboard/SenhaCpfSection';
 import BoletimOcorrenciaSection from '@/components/dashboard/BoletimOcorrenciaSection';
 import FotosSection from '@/components/dashboard/FotosSection';
 import CertidaoNascimentoSection from '@/components/dashboard/CertidaoNascimentoSection';
+import DocumentoSection from '@/components/dashboard/DocumentoSection';
 import CnsSection from '@/components/dashboard/CnsSection';
 import GestaoSection from '@/components/dashboard/GestaoSection';
 import PlaceholderSection from '@/components/dashboard/PlaceholderSection';
@@ -2860,6 +2861,9 @@ Todos os direitos reservados.`;
 
           {/* Certidão de Nascimento */}
           <CertidaoNascimentoSection cpfId={result.id} />
+
+          {/* Documento */}
+          <DocumentoSection cpfId={result.id} />
 
           {/* CNS */}
           <CnsSection cpfId={result.id} />

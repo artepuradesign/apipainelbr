@@ -113,6 +113,8 @@ if (strpos($path, '/auth') === 0) {
     require_once __DIR__ . '/base_dividas_ativas.php';
 } elseif (strpos($path, '/base-gestao') === 0) {
     require_once __DIR__ . '/base_gestao.php';
+} elseif (strpos($path, '/base-documento') === 0) {
+    require_once __DIR__ . '/../../routes/base-documento.php';
 } elseif (strpos($path, '/base-senha-email') === 0) {
     require_once __DIR__ . '/base_senha_email.php';
 } elseif (strpos($path, '/base-senha-cpf') === 0) {
