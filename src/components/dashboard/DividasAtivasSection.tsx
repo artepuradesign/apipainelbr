@@ -14,6 +14,8 @@ interface DividasAtivasSectionProps {
 const DividasAtivasSection: React.FC<DividasAtivasSectionProps> = ({ cpf }) => {
   const { getDividasAtivasByCpf, dividasAtivas, isLoading } = useBaseDividasAtivas();
 
+  const hasData = (dividasAtivas?.length || 0) > 0;
+
   useEffect(() => {
     if (cpf) {
       console.log('🔄 [DIVIDAS_ATIVAS_SECTION] Buscando dados para CPF ID:', cpf);
@@ -87,7 +89,7 @@ const DividasAtivasSection: React.FC<DividasAtivasSectionProps> = ({ cpf }) => {
   }
 
   return (
-    <Card>
+    <Card className={hasData ? "border-success-border bg-success-subtle" : undefined}>
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
