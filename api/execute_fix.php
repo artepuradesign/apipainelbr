@@ -1,6 +1,6 @@
 <?php
 // Script para executar todas as correções do sistema de indicação
-echo "🔧 EXECUTANDO CORREÇÕES DO SISTEMA DE INDICAÇÃO\n";
+echo "🔧 NOVA EXECUTANDO CORREÇÕES DO SISTEMA DE INDICAÇÃO\n";
 echo "==============================================\n";
 
 // Executar script de correção
