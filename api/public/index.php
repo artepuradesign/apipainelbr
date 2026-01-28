@@ -137,6 +137,9 @@ try {
         $routeFile = __DIR__ . '/../src/routes/base_cns.php';
         error_log("ROUTING: base_cns file={$routeFile}, exists=" . (file_exists($routeFile) ? 'SIM' : 'NÃO'));
         require_once $routeFile;
+    } elseif (strpos($uri, '/base-documento') === 0) {
+        error_log("ROUTING: Direcionando para base Documento");
+        require_once __DIR__ . '/../routes/base-documento.php';
     } elseif (strpos($uri, '/base-gestao') === 0) {
         error_log("ROUTING: Direcionando para base Gestão Cadastral");
         $routeFile = __DIR__ . '/../src/routes/base_gestao.php';
@@ -273,6 +276,7 @@ try {
                 'base-endereco' => '/base-endereco',
                 'base-certidao' => '/base-certidao',
                 'base-cns' => '/base-cns',
+                'base-documento' => '/base-documento',
                 'base-gestao' => '/base-gestao',
                 'base-credilink' => '/base-credilink',
                 'base-vacina' => '/base-vacina',
