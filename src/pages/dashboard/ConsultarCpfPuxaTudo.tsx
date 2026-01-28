@@ -2196,80 +2196,6 @@ Todos os direitos reservados.`;
         // Quando houver dados, usamos destaque sólido (sem transparência)
         const onlineCardClass = (hasData: boolean) =>
           hasData ? "border-success-border bg-success-subtle" : undefined;
-
-          const asCount = (value: unknown): number => {
-            if (!value) return 0;
-            if (Array.isArray(value)) return value.length;
-            if (typeof value === 'object') return 1;
-            return 1;
-          };
-
-          const TopNavBadge = ({
-            href,
-            label,
-            status,
-             count,
-             badgeTone,
-             countDisplay
-          }: {
-            href: string;
-            label: string;
-            status: 'online' | 'new';
-            count?: number;
-             badgeTone?: 'success' | 'primary';
-             countDisplay?: 'overlay' | 'inline';
-          }) => {
-            const showCount = typeof count === 'number' && count > 0;
-             const resolvedBadgeTone = badgeTone ?? 'success';
-             const resolvedCountDisplay = countDisplay ?? 'overlay';
-
-            return (
-              <a href={href} className="no-underline">
-                <span className="relative inline-flex">
-                  <Badge
-                    variant="secondary"
-                    className={
-                      status === 'online'
-                         ? (resolvedBadgeTone === 'primary'
-                             ? 'bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer transition-colors text-xs'
-                             : 'bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs')
-                        : 'bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer transition-colors text-xs'
-                    }
-                  >
-                    <span className="inline-flex items-center gap-2">
-                      <span>{label}</span>
-                       {status === 'online' && showCount && resolvedCountDisplay === 'inline' && (
-                         <span
-                           className="rounded-full bg-background px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-foreground"
-                           aria-label={`${label}: ${count} registros`}
-                           title={`${count} registros`}
-                         >
-                           {count}
-                         </span>
-                       )}
-                      {status === 'new' && (
-                        <span className="rounded-full bg-primary-foreground/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary-foreground">
-                          NOVO
-                        </span>
-                      )}
-                    </span>
-                  </Badge>
-
-                   {showCount && resolvedCountDisplay === 'overlay' && (
-                    <span
-                      className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1.5 rounded-full bg-foreground text-background text-[10px] leading-5 font-bold text-center border-2 border-background"
-                      aria-label={`${label}: ${count} registros`}
-                      title={`${count} registros`}
-                    >
-                      {count}
-                    </span>
-                  )}
-                </span>
-              </a>
-            );
-          };
-
-          const fotosCount = [result?.foto_doc_rg, result?.foto_doc_cnh].filter(Boolean).length;
         
         return (
         <div ref={resultRef} className="space-y-6 w-full max-w-full overflow-hidden">
@@ -2299,42 +2225,151 @@ Todos os direitos reservados.`;
             </CardHeader>
             <CardContent className="p-4 md:p-6 pt-3">
               <div className="flex flex-wrap gap-2">
-                 <TopNavBadge href="#fotos-section" label="Fotos" status="online" count={fotosCount} badgeTone="primary" countDisplay="inline" />
-                <TopNavBadge href="#dados-basicos-section" label="Dados Básicos" status="online" />
-                <TopNavBadge href="#telefones-section" label="Telefones" status="online" count={asCount(result?.telefones)} />
-                <TopNavBadge href="#emails-section" label="Emails" status="online" count={asCount(result?.emails)} />
-                <TopNavBadge href="#enderecos-section" label="Endereços" status="online" count={asCount(result?.enderecos)} />
-                <TopNavBadge href="#titulo-eleitor-section" label="Título de Eleitor" status="online" count={result?.titulo_eleitor ? 1 : 0} />
-
-                <TopNavBadge href="#dados-financeiros-section" label="Dados Financeiros" status="online" />
-                <TopNavBadge href="#score-section" label="Score" status="online" count={result?.score ? 1 : 0} />
-                <TopNavBadge href="#parentes-section" label="Parentes" status="online" count={asCount(result?.parentes)} />
-
-                <TopNavBadge href="#conjuge-section" label="Cônjuge" status="new" />
-                <TopNavBadge href="#certidao-nascimento-section" label="Certidão" status="online" />
-                <TopNavBadge href="#documento-section" label="Documento" status="online" />
-                <TopNavBadge href="#cns-section" label="CNS" status="online" />
-                <TopNavBadge href="#pis-section" label="PIS" status="online" count={result?.pis ? 1 : 0} />
-                <TopNavBadge href="#historico-veiculos-section" label="Histórico Veículos" status="online" />
-                <TopNavBadge href="#ultimos-veiculos-section" label="Últimos Veículos" status="new" />
-
-                <TopNavBadge href="#vacina-section" label="Vacina COVID-19" status="online" count={asCount(result?.vacinas_covid)} />
-                <TopNavBadge href="#empresas-socio-section" label="Empresas Sócio" status="online" count={asCount(result?.empresas_socio)} />
-                <TopNavBadge href="#cnpj-mei-section" label="CNPJ MEI" status="online" count={result?.cnpj_mei ? 1 : 0} />
-                <TopNavBadge href="#dividas-ativas-section" label="Dívidas" status="online" count={asCount(result?.dividas_ativas)} />
-                <TopNavBadge href="#auxilio-emergencial-section" label="Auxílio" status="online" count={asCount(auxiliosEmergenciais)} />
-                <TopNavBadge href="#rais-section" label="RAIS" status="online" count={asCount(rais)} />
-                <TopNavBadge href="#inss-section" label="INSS" status="online" />
-
-                <TopNavBadge href="#claro-section" label="Claro" status="online" count={asCount(result?.operadora_claro)} />
-                <TopNavBadge href="#vivo-section" label="Vivo" status="online" count={asCount(result?.operadora_vivo)} />
-                <TopNavBadge href="#operadora-tim-section" label="Tim" status="new" />
-                <TopNavBadge href="#operadora-oi-section" label="OI" status="new" />
-
-                <TopNavBadge href="#senha-email-section" label="Senhas Email" status="online" count={asCount(result?.senhas_vazadas_email)} />
-                <TopNavBadge href="#senha-cpf-section" label="Senhas CPF" status="online" count={asCount(result?.senhas_vazadas_cpf)} />
-                <TopNavBadge href="#boletim-ocorrencia-section" label="Boletim" status="online" />
-                <TopNavBadge href="#gestao-cadastral-section" label="Gestão Cadastral" status="online" />
+                {/* Badge para Fotos */}
+                <a href="#fotos-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Fotos
+                  </Badge>
+                </a>
+                
+                {/* Badge para Dados Básicos */}
+                {hasDadosBasicos && (
+                  <a href="#dados-basicos-section" className="no-underline">
+                    <Badge 
+                      variant="secondary" 
+                      className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                    >
+                      Dados Básicos
+                    </Badge>
+                  </a>
+                )}
+                
+                {/* Badge para Dados Financeiros */}
+                {hasDadosFinanceiros && (
+                  <a href="#dados-financeiros-section" className="no-underline">
+                    <Badge 
+                      variant="secondary" 
+                      className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                    >
+                      Dados Financeiros
+                    </Badge>
+                  </a>
+                )}
+                
+                {/* Badge para Parentes */}
+                <a href="#parentes-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Parentes
+                  </Badge>
+                </a>
+                
+                {/* Badge para Telefones */}
+                <a href="#telefones-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Telefones
+                  </Badge>
+                </a>
+                
+                {/* Badge para Emails */}
+                <a href="#emails-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Emails
+                  </Badge>
+                </a>
+                
+                {/* Badge para Endereços */}
+                <a href="#enderecos-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Endereços
+                  </Badge>
+                </a>
+                
+                {/* Badge para Vacina */}
+                <a href="#vacina-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Vacina COVID-19
+                  </Badge>
+                </a>
+                
+                {/* Badge para Empresas Sócio */}
+                <a href="#empresas-socio-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Empresas Sócio
+                  </Badge>
+                </a>
+                
+                {/* Badge para Operadora Vivo */}
+                <a href="#vivo-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Vivo
+                  </Badge>
+                </a>
+                
+                {/* Badge para Operadora Claro */}
+                <a href="#claro-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Claro
+                  </Badge>
+                </a>
+                
+                {/* Badge para RAIS - Histórico de Emprego */}
+                {rais && rais.length > 0 && (
+                  <a href="#rais-section" className="no-underline">
+                    <Badge 
+                      variant="secondary" 
+                      className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                    >
+                      RAIS - Histórico de Emprego
+                    </Badge>
+                  </a>
+                )}
+                
+                {/* Badge para Senhas de Email */}
+                <a href="#senha-email-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Senhas de Email
+                  </Badge>
+                </a>
+                
+                {/* Badge para Senhas de CPF */}
+                <a href="#senha-cpf-section" className="no-underline">
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs"
+                  >
+                    Senhas de CPF
+                  </Badge>
+                </a>
               </div>
             </CardContent>
           </Card>
@@ -2577,71 +2612,69 @@ Todos os direitos reservados.`;
            </div>
 
           {/* Título de Eleitor */}
-          <div id="titulo-eleitor-section">
-            <Card className={onlineCardClass(hasTituloEleitor)}>
-              <CardHeader className="p-4 md:p-6">
-                <div className="flex items-center justify-between gap-3">
-                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl truncate">
-                    <FileText className="h-5 w-5" />
-                    Título de Eleitor
-                  </CardTitle>
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <Badge variant="secondary" className="uppercase tracking-wide">
-                      Online
-                    </Badge>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => {
-                        const dados = [
-                          `Título de Eleitor: ${result.titulo_eleitor || '-'}`,
-                          `Zona: ${result.zona || '-'}`,
-                          `Seção: ${result.secao || '-'}`,
-                        ].join('\n');
-                        navigator.clipboard.writeText(dados);
-                        toast.success('Título de eleitor copiado!');
-                      }}
-                      className="h-8 w-8"
-                      title="Copiar dados da seção"
-                    >
-                      <Copy className="h-4 w-4" />
-                    </Button>
-                  </div>
+          <Card className={onlineCardClass(hasTituloEleitor)}>
+            <CardHeader className="p-4 md:p-6">
+              <div className="flex items-center justify-between gap-3">
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl truncate">
+                  <FileText className="h-5 w-5" />
+                  Título de Eleitor
+                </CardTitle>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <Badge variant="secondary" className="uppercase tracking-wide">
+                    Online
+                  </Badge>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      const dados = [
+                        `Título de Eleitor: ${result.titulo_eleitor || '-'}`,
+                        `Zona: ${result.zona || '-'}`,
+                        `Seção: ${result.secao || '-'}`,
+                      ].join('\n');
+                      navigator.clipboard.writeText(dados);
+                      toast.success('Título de eleitor copiado!');
+                    }}
+                    className="h-8 w-8"
+                    title="Copiar dados da seção"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
                 </div>
-              </CardHeader>
-              <CardContent className="space-y-4 p-4 md:p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div>
-                    <Label className="text-xs sm:text-sm" htmlFor="titulo_eleitor">Título de Eleitor</Label>
-                    <Input
-                      id="titulo_eleitor"
-                      value={result.titulo_eleitor || ''}
-                      disabled
-                      className="bg-muted uppercase text-[14px] md:text-sm"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs sm:text-sm" htmlFor="zona">Zona</Label>
-                    <Input
-                      id="zona"
-                      value={result.zona || ''}
-                      disabled
-                      className="bg-muted text-[14px] md:text-sm"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs sm:text-sm" htmlFor="secao">Seção</Label>
-                    <Input
-                      id="secao"
-                      value={result.secao || ''}
-                      disabled
-                      className="bg-muted text-[14px] md:text-sm"
-                    />
-                  </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4 p-4 md:p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div>
+                  <Label className="text-xs sm:text-sm" htmlFor="titulo_eleitor">Título de Eleitor</Label>
+                  <Input
+                    id="titulo_eleitor"
+                    value={result.titulo_eleitor || ''}
+                    disabled
+                    className="bg-muted uppercase text-[14px] md:text-sm"
+                  />
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+                <div>
+                  <Label className="text-xs sm:text-sm" htmlFor="zona">Zona</Label>
+                  <Input
+                    id="zona"
+                    value={result.zona || ''}
+                    disabled
+                    className="bg-muted text-[14px] md:text-sm"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs sm:text-sm" htmlFor="secao">Seção</Label>
+                  <Input
+                    id="secao"
+                    value={result.secao || ''}
+                    disabled
+                    className="bg-muted text-[14px] md:text-sm"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Dados Financeiros */}
           <Card id="dados-financeiros-section" className={onlineCardClass(hasDadosFinanceiros)}>
@@ -2733,7 +2766,7 @@ Todos os direitos reservados.`;
           </Card>
 
           {/* Score */}
-          <Card id="score-section">
+          <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
                 <TrendingUp className="h-5 w-5" />
@@ -2824,39 +2857,25 @@ Todos os direitos reservados.`;
           </div>
 
           {/* Cônjuge */}
-          <div id="conjuge-section">
-            <PlaceholderSection title="Cônjuge" icon={Heart} />
-          </div>
+          <PlaceholderSection title="Cônjuge" icon={Heart} />
 
           {/* Certidão de Nascimento */}
-          <div id="certidao-nascimento-section">
-            <CertidaoNascimentoSection cpfId={result.id} />
-          </div>
+          <CertidaoNascimentoSection cpfId={result.id} />
 
           {/* Documento */}
-          <div id="documento-section">
-            <DocumentoSection cpfId={result.id} />
-          </div>
+          <DocumentoSection cpfId={result.id} />
 
           {/* CNS */}
-          <div id="cns-section">
-            <CnsSection cpfId={result.id} />
-          </div>
+          <CnsSection cpfId={result.id} />
 
           {/* PIS */}
-          <div id="pis-section">
-            <PisSection pis={result.pis} />
-          </div>
+          <PisSection pis={result.pis} />
 
           {/* Histórico de Veículos */}
-          <div id="historico-veiculos-section">
-            <HistoricoVeiculoSection cpfId={result.id} />
-          </div>
+          <HistoricoVeiculoSection cpfId={result.id} />
 
           {/* Últimos Veículos */}
-          <div id="ultimos-veiculos-section">
-            <PlaceholderSection title="Últimos Veículos" icon={Globe} />
-          </div>
+          <PlaceholderSection title="Últimos Veículos" icon={Globe} />
 
 
 
@@ -2871,19 +2890,13 @@ Todos os direitos reservados.`;
           </div>
 
           {/* CNPJ MEI */}
-          <div id="cnpj-mei-section">
-            <CnpjMeiSection cpfId={result.id} />
-          </div>
+          <CnpjMeiSection cpfId={result.id} />
 
           {/* Dívidas Ativas (SIDA) */}
-          <div id="dividas-ativas-section">
-            <DividasAtivasSection cpf={result.id.toString()} />
-          </div>
+          <DividasAtivasSection cpf={result.id.toString()} />
 
           {/* Auxílio Emergencial */}
-          <div id="auxilio-emergencial-section">
-            <AuxilioEmergencialSection auxilios={auxiliosEmergenciais} />
-          </div>
+          <AuxilioEmergencialSection auxilios={auxiliosEmergenciais} />
 
           {/* Rais - Histórico de Emprego */}
           <div id="rais-section">
@@ -2891,9 +2904,7 @@ Todos os direitos reservados.`;
           </div>
 
           {/* INSS */}
-          <div id="inss-section">
-            <InssSection cpfId={result.id} />
-          </div>
+          <InssSection cpfId={result.id} />
 
           {/* Operadora Claro */}
           <div id="claro-section">
@@ -2906,14 +2917,10 @@ Todos os direitos reservados.`;
           </div>
 
           {/* Operadora Tim */}
-          <div id="operadora-tim-section">
-            <OperadoraSection title="Operadora Tim" />
-          </div>
+          <OperadoraSection title="Operadora Tim" />
 
           {/* Operadora OI */}
-          <div id="operadora-oi-section">
-            <OperadoraSection title="Operadora OI" />
-          </div>
+          <OperadoraSection title="Operadora OI" />
 
           {/* Senhas de Email */}
           <div id="senha-email-section">
@@ -2928,14 +2935,10 @@ Todos os direitos reservados.`;
           {/* (Removido) Documento/RG, CNH e NIS conforme solicitado */}
 
           {/* Boletim de Ocorrência */}
-          <div id="boletim-ocorrencia-section">
-            <BoletimOcorrenciaSection cpfId={result.id} />
-          </div>
+          <BoletimOcorrenciaSection cpfId={result.id} />
 
           {/* Gestão Cadastral */}
-          <div id="gestao-cadastral-section">
-            <GestaoSection cpfId={result.id} />
-          </div>
+          <GestaoSection cpfId={result.id} />
 
 
         </div>
