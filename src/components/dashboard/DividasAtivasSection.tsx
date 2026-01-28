@@ -17,6 +17,26 @@ const DividasAtivasSection: React.FC<DividasAtivasSectionProps> = ({ cpf }) => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const lastCpfRef = useRef<string | null>(null);
 
+  const formatDateBr = (date?: string) => {
+    if (!date) return '-';
+    // Espera formato yyyy-mm-dd (ou ISO). Força meia-noite local para evitar variação por fuso.
+    const d = new Date(date.includes('T') ? date : `${date}T00:00:00`);
+    if (Number.isNaN(d.getTime())) return date;
+    return d.toLocaleDateString('pt-BR');
+  };
+
+  const formatCurrencyBr = (value?: number | string | null) => {
+    if (value === null || value === undefined || value === '') return '-';
+    const n = typeof value === 'number' ? value : Number(value);
+    if (Number.isNaN(n)) return String(value);
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(n);
+  };
+
   const hasData = useMemo(() => (dividasAtivas?.length ?? 0) > 0, [dividasAtivas?.length]);
   const sectionCardClass = useMemo(
     () => (hasData ? 'border-success-border bg-success-subtle' : undefined),
@@ -58,9 +78,9 @@ const DividasAtivasSection: React.FC<DividasAtivasSectionProps> = ({ cpf }) => {
       `Tipo Situação: ${divida.tipo_situacao_inscricao || '-'}\n` +
       `Situação: ${divida.situacao_inscricao || '-'}\n` +
       `Receita Principal: ${divida.receita_principal || '-'}\n` +
-      `Data Inscrição: ${divida.data_inscricao || '-'}\n` +
+      `Data Inscrição: ${formatDateBr(divida.data_inscricao)}\n` +
       `Indicador Ajuizado: ${divida.indicador_ajuizado || '-'}\n` +
-      `Valor Consolidado: ${divida.valor_consolidado ? `R$ ${Number(divida.valor_consolidado).toFixed(2)}` : '-'}`
+      `Valor Consolidado: ${formatCurrencyBr(divida.valor_consolidado)}`
     ).join('\n\n');
 
     navigator.clipboard.writeText(dados);
@@ -225,7 +245,7 @@ const DividasAtivasSection: React.FC<DividasAtivasSectionProps> = ({ cpf }) => {
                 <Label htmlFor={`data_${divida.id}`}>Data Inscrição</Label>
                 <Input
                   id={`data_${divida.id}`}
-                  value={divida.data_inscricao || '-'}
+                  value={formatDateBr(divida.data_inscricao)}
                   disabled
                   className="bg-muted text-[14px] md:text-sm"
                 />
@@ -245,7 +265,7 @@ const DividasAtivasSection: React.FC<DividasAtivasSectionProps> = ({ cpf }) => {
                 <Label htmlFor={`valor_${divida.id}`}>Valor Consolidado</Label>
                 <Input
                   id={`valor_${divida.id}`}
-                  value={divida.valor_consolidado ? `R$ ${Number(divida.valor_consolidado).toFixed(2)}` : '-'}
+                  value={formatCurrencyBr(divida.valor_consolidado)}
                   disabled
                   className="bg-muted text-[14px] md:text-sm"
                 />
