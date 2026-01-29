@@ -17,6 +17,8 @@ const FotosSection: React.FC<FotosSectionProps> = ({ cpfId, cpfNumber }) => {
   const [fotos, setFotos] = useState<BaseFoto[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const DESKTOP_SLOTS = 4;
+
   const hasData = fotos.length > 0;
   const sectionCardClass = hasData ? "border-success-border bg-success-subtle" : undefined;
 
@@ -99,6 +101,117 @@ const FotosSection: React.FC<FotosSectionProps> = ({ cpfId, cpfNumber }) => {
     window.open(whatsappUrl, '_blank');
   };
 
+  const renderPlaceholderCard = (index: number) => (
+    <Card key={`placeholder-${index}`} className="overflow-hidden border-2">
+      <div className="relative bg-muted aspect-[3/4] flex items-center justify-center overflow-hidden">
+        <img
+          src={placeholderImage}
+          alt={`Foto ${index + 1} (simulação)`}
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      <div className="p-2 bg-primary text-primary-foreground text-center text-sm font-medium">
+        {`Foto ${index + 1}`}
+      </div>
+    </Card>
+  );
+
+  const renderRealPhotoCard = (foto: BaseFoto, index: number) => {
+    const photoUrl = getPhotoUrl(foto.photo);
+
+    return (
+      <div key={foto.id ?? `${foto.photo}-${index}`} className="relative">
+        <PhotoZoomOverlay
+          photoUrl={photoUrl}
+          alt={`Foto ${index + 1}`}
+          onCopyUrl={handleCopyUrl}
+          onDownload={handleDownload}
+          onShareTelegram={handleShareTelegram}
+          onShareWhatsApp={handleShareWhatsApp}
+        >
+          <Card className="overflow-hidden hover:shadow-lg transition-all duration-200 border-2 cursor-pointer group">
+            <div className="relative bg-muted aspect-[3/4] flex items-center justify-center overflow-hidden">
+              <img
+                src={photoUrl}
+                alt={`Foto ${index + 1}`}
+                className="w-full h-full object-cover"
+                onLoad={() => {
+                  console.log('[FOTOS] Imagem carregada:', photoUrl);
+                }}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  console.warn('[FOTOS] Falha ao carregar imagem:', photoUrl);
+                  target.src = placeholderImage;
+                }}
+                loading="lazy"
+              />
+
+              {/* Action buttons overlay on thumbnail */}
+              <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="h-8 w-8 bg-background/90 hover:bg-background shadow-lg"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleCopyUrl(photoUrl);
+                  }}
+                  title="Copiar URL"
+                >
+                  <Copy className="h-4 w-4 text-foreground dark:text-foreground" />
+                </Button>
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="h-8 w-8 bg-background/90 hover:bg-background shadow-lg"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleDownload(photoUrl, foto.photo);
+                  }}
+                  title="Baixar foto"
+                >
+                  <Download className="h-4 w-4 text-green-600 dark:text-foreground" />
+                </Button>
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="h-8 w-8 bg-background/90 hover:bg-background shadow-lg"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleShareTelegram(photoUrl);
+                  }}
+                  title="Compartilhar no Telegram"
+                >
+                  <Send className="h-4 w-4 text-blue-500 dark:text-foreground" />
+                </Button>
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="h-8 w-8 bg-background/90 hover:bg-background shadow-lg"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleShareWhatsApp(photoUrl);
+                  }}
+                  title="Compartilhar no WhatsApp"
+                >
+                  <MessageCircle className="h-4 w-4 text-green-500 dark:text-foreground" />
+                </Button>
+              </div>
+            </div>
+            <div className="p-2 bg-primary text-primary-foreground text-center text-sm font-medium">
+              {`Foto ${index + 1}`}
+            </div>
+          </Card>
+        </PhotoZoomOverlay>
+      </div>
+    );
+  };
+
   if (loading) {
     return (
       <Card className={sectionCardClass}>
@@ -141,217 +254,25 @@ const FotosSection: React.FC<FotosSectionProps> = ({ cpfId, cpfNumber }) => {
       </CardHeader>
       <CardContent className="space-y-4 p-4 md:p-6">
         {fotos.length > 0 ? (
-          fotos.length === 1 ? (
-            <div className="flex justify-center">
-              {(() => {
-                const foto = fotos[0];
-                const photoUrl = getPhotoUrl(foto.photo);
-                return (
-                  <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-[14rem]">
-                    <PhotoZoomOverlay
-                      photoUrl={photoUrl}
-                      alt="Foto 1"
-                      onCopyUrl={handleCopyUrl}
-                      onDownload={handleDownload}
-                      onShareTelegram={handleShareTelegram}
-                      onShareWhatsApp={handleShareWhatsApp}
-                    >
-                      <Card className="overflow-hidden hover:shadow-lg transition-all duration-200 border-2 cursor-pointer group">
-                        <div className="relative bg-muted aspect-[3/4] flex items-center justify-center overflow-hidden">
-                          <img
-                            src={photoUrl}
-                            alt="Foto 1"
-                            className="w-full h-full object-cover"
-                            onLoad={() => {
-                              console.log('[FOTOS] Imagem carregada:', photoUrl);
-                            }}
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              console.warn('[FOTOS] Falha ao carregar imagem:', photoUrl);
-                              target.src = placeholderImage;
-                            }}
-                            loading="lazy"
-                          />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {(() => {
+              const placeholdersToAdd = Math.max(0, DESKTOP_SLOTS - fotos.length);
 
-                          {/* Action buttons overlay */}
-                          <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Button
-                              size="icon"
-                              variant="secondary"
-                              className="h-8 w-8 bg-background/90 hover:bg-background shadow-lg"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleCopyUrl(photoUrl);
-                              }}
-                              title="Copiar URL"
-                            >
-                              <Copy className="h-4 w-4 text-foreground dark:text-foreground" />
-                            </Button>
-                            <Button
-                              size="icon"
-                              variant="secondary"
-                              className="h-8 w-8 bg-background/90 hover:bg-background shadow-lg"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleDownload(photoUrl, foto.photo);
-                              }}
-                              title="Baixar foto"
-                            >
-                              <Download className="h-4 w-4 text-green-600 dark:text-foreground" />
-                            </Button>
-                            <Button
-                              size="icon"
-                              variant="secondary"
-                              className="h-8 w-8 bg-background/90 hover:bg-background shadow-lg"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleShareTelegram(photoUrl);
-                              }}
-                              title="Compartilhar no Telegram"
-                            >
-                              <Send className="h-4 w-4 text-blue-500 dark:text-foreground" />
-                            </Button>
-                            <Button
-                              size="icon"
-                              variant="secondary"
-                              className="h-8 w-8 bg-background/90 hover:bg-background shadow-lg"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleShareWhatsApp(photoUrl);
-                              }}
-                              title="Compartilhar no WhatsApp"
-                            >
-                              <MessageCircle className="h-4 w-4 text-green-500 dark:text-foreground" />
-                            </Button>
-                          </div>
-                        </div>
-                        <div className="p-2 bg-primary text-primary-foreground text-center text-sm font-medium">
-                          Foto 1
-                        </div>
-                      </Card>
-                    </PhotoZoomOverlay>
-                  </div>
-                );
-              })()}
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {fotos.map((foto, index) => {
-                const photoUrl = getPhotoUrl(foto.photo);
-                return (
-                  <div key={foto.id} className="relative">
-                    <PhotoZoomOverlay
-                      photoUrl={photoUrl}
-                      alt={`Foto ${index + 1}`}
-                      onCopyUrl={handleCopyUrl}
-                      onDownload={handleDownload}
-                      onShareTelegram={handleShareTelegram}
-                      onShareWhatsApp={handleShareWhatsApp}
-                    >
-                      <Card className="overflow-hidden hover:shadow-lg transition-all duration-200 border-2 cursor-pointer group">
-                        <div className="relative bg-muted aspect-[3/4] flex items-center justify-center overflow-hidden">
-                          <img
-                            src={photoUrl}
-                            alt={`Foto ${index + 1}`}
-                            className="w-full h-full object-cover"
-                            onLoad={() => {
-                              console.log('[FOTOS] Imagem carregada:', photoUrl);
-                            }}
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              console.warn('[FOTOS] Falha ao carregar imagem:', photoUrl);
-                              target.src = placeholderImage;
-                            }}
-                            loading="lazy"
-                          />
-                          
-                          {/* Action buttons overlay on thumbnail */}
-                          <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Button
-                              size="icon"
-                              variant="secondary"
-                              className="h-8 w-8 bg-background/90 hover:bg-background shadow-lg"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleCopyUrl(photoUrl);
-                              }}
-                              title="Copiar URL"
-                            >
-                              <Copy className="h-4 w-4 text-foreground dark:text-foreground" />
-                            </Button>
-                            <Button
-                              size="icon"
-                              variant="secondary"
-                              className="h-8 w-8 bg-background/90 hover:bg-background shadow-lg"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleDownload(photoUrl, foto.photo);
-                              }}
-                              title="Baixar foto"
-                            >
-                              <Download className="h-4 w-4 text-green-600 dark:text-foreground" />
-                            </Button>
-                            <Button
-                              size="icon"
-                              variant="secondary"
-                              className="h-8 w-8 bg-background/90 hover:bg-background shadow-lg"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleShareTelegram(photoUrl);
-                              }}
-                              title="Compartilhar no Telegram"
-                            >
-                              <Send className="h-4 w-4 text-blue-500 dark:text-foreground" />
-                            </Button>
-                            <Button
-                              size="icon"
-                              variant="secondary"
-                              className="h-8 w-8 bg-background/90 hover:bg-background shadow-lg"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleShareWhatsApp(photoUrl);
-                              }}
-                              title="Compartilhar no WhatsApp"
-                            >
-                              <MessageCircle className="h-4 w-4 text-green-500 dark:text-foreground" />
-                            </Button>
-                          </div>
-                        </div>
-                        <div className="p-2 bg-primary text-primary-foreground text-center text-sm font-medium">
-                          {`Foto ${index + 1}`}
-                        </div>
-                      </Card>
-                    </PhotoZoomOverlay>
-                  </div>
-                );
-              })}
-            </div>
-          )
+              return (
+                <>
+                  {fotos.map((foto, index) => renderRealPhotoCard(foto, index))}
+                  {Array.from({ length: placeholdersToAdd }).map((_, i) =>
+                    renderPlaceholderCard(fotos.length + i)
+                  )}
+                </>
+              );
+            })()}
+          </div>
         ) : (
           <div className="space-y-3">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {Array.from({ length: 4 }).map((_, index) => (
-                <Card key={index} className="overflow-hidden border-2">
-                  <div className="relative bg-muted aspect-[3/4] flex items-center justify-center overflow-hidden">
-                    <img
-                      src={placeholderImage}
-                      alt={`Foto ${index + 1} (simulação)`}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="p-2 bg-primary text-primary-foreground text-center text-sm font-medium">
-                    {`Foto ${index + 1}`}
-                  </div>
-                </Card>
+                renderPlaceholderCard(index)
               ))}
             </div>
 
