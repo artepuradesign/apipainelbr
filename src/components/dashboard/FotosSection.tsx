@@ -336,9 +336,28 @@ const FotosSection: React.FC<FotosSectionProps> = ({ cpfId, cpfNumber }) => {
             </div>
           )
         ) : (
-          <div className="text-center py-8 text-muted-foreground">
-            <Camera className="h-12 w-12 mx-auto mb-2 opacity-50" />
-            <p>Nenhuma foto cadastrada para este CPF</p>
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <Card key={index} className="overflow-hidden border-2">
+                  <div className="relative bg-muted aspect-[3/4] flex items-center justify-center overflow-hidden">
+                    <img
+                      src={placeholderImage}
+                      alt={`Foto ${index + 1} (simulação)`}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="p-2 bg-primary text-primary-foreground text-center text-sm font-medium">
+                    {`Foto ${index + 1}`}
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            <p className="text-center text-sm text-muted-foreground">
+              Nenhuma foto cadastrada — exibindo imagens de exemplo.
+            </p>
           </div>
         )}
       </CardContent>
