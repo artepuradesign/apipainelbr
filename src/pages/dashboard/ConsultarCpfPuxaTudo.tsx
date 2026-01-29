@@ -2229,12 +2229,33 @@ Todos os direitos reservados.`;
                 // Exibir somente as sessões marcadas como "Online" (atalhos do topo),
                 // mantendo a mesma ordem em que as seções aparecem na página.
                 const onlineBadges = [
+                  { href: '#fotos-section', label: 'Fotos' },
+                  { href: '#dados-basicos-section', label: 'Dados Básicos' },
+                  { href: '#telefones-section', label: 'Telefones' },
+                  { href: '#emails-section', label: 'Emails' },
+                  { href: '#enderecos-section', label: 'Endereços' },
+                  { href: '#titulo-eleitor-section', label: 'Título de Eleitor' },
+                  { href: '#dados-financeiros-section', label: 'Dados Financeiros' },
+                  { href: '#score-section', label: 'Score' },
+                  { href: '#parentes-section', label: 'Parentes' },
+                  { href: '#certidao-nascimento-section', label: 'Certidão de Nascimento' },
                   { href: '#documento-section', label: 'Documento' },
-                  { href: '#dividas-ativas-section', label: 'Dívidas Ativas' },
-                  { href: '#rais-section', label: 'RAIS - Histórico de Emprego' },
+                  { href: '#cns-section', label: 'CNS' },
+                  { href: '#pis-section', label: 'PIS' },
+                  { href: '#vacinas-section', label: 'Vacinas' },
+                  { href: '#empresas-socio-section', label: 'Empresas Associadas (SÓCIO)' },
+                  { href: '#cnpj-mei-section', label: 'CNPJ MEI' },
+                  { href: '#dividas-ativas-section', label: 'Dívidas Ativas (SIDA)' },
+                  { href: '#auxilio-emergencial-section', label: 'Auxílio Emergencial' },
+                  { href: '#rais-section', label: 'Rais - Histórico de Emprego' },
                   { href: '#inss-section', label: 'INSS' },
-                  { href: '#tim-section', label: 'TIM' },
-                  { href: '#oi-section', label: 'OI' },
+                  { href: '#claro-section', label: 'Operadora Claro' },
+                  { href: '#vivo-section', label: 'Operadora Vivo' },
+                  { href: '#tim-section', label: 'Operadora TIM' },
+                  { href: '#oi-section', label: 'Operadora OI' },
+                  { href: '#senhas-email-section', label: 'Senhas de Email' },
+                  { href: '#senhas-cpf-section', label: 'Senhas de CPF' },
+                  { href: '#gestao-cadastral-section', label: 'Gestão Cadastral' },
                 ] as const;
 
                 const badgeClassName =
@@ -2493,7 +2514,7 @@ Todos os direitos reservados.`;
            </div>
 
           {/* Título de Eleitor */}
-          <Card className={onlineCardClass(hasTituloEleitor)}>
+          <Card id="titulo-eleitor-section" className={onlineCardClass(hasTituloEleitor)}>
             <CardHeader className="p-4 md:p-6">
               <div className="flex items-center justify-between gap-3">
                 <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl truncate">
@@ -2647,7 +2668,7 @@ Todos os direitos reservados.`;
           </Card>
 
           {/* Score */}
-          <Card>
+          <Card id="score-section">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
                 <TrendingUp className="h-5 w-5" />
@@ -2741,7 +2762,9 @@ Todos os direitos reservados.`;
           <PlaceholderSection title="Cônjuge" icon={Heart} />
 
           {/* Certidão de Nascimento */}
-          <CertidaoNascimentoSection cpfId={result.id} />
+          <div id="certidao-nascimento-section">
+            <CertidaoNascimentoSection cpfId={result.id} />
+          </div>
 
           {/* Documento */}
           <div id="documento-section">
@@ -2749,10 +2772,14 @@ Todos os direitos reservados.`;
           </div>
 
           {/* CNS */}
-          <CnsSection cpfId={result.id} />
+          <div id="cns-section">
+            <CnsSection cpfId={result.id} />
+          </div>
 
           {/* PIS */}
-          <PisSection pis={result.pis} />
+          <div id="pis-section">
+            <PisSection pis={result.pis} />
+          </div>
 
           {/* Histórico de Veículos */}
           <HistoricoVeiculoSection cpfId={result.id} />
@@ -2763,7 +2790,7 @@ Todos os direitos reservados.`;
 
 
           {/* Covid */}
-          <div id="vacina-section">
+          <div id="vacinas-section">
             <VacinaDisplay cpfId={result.id} />
           </div>
 
@@ -2773,7 +2800,9 @@ Todos os direitos reservados.`;
           </div>
 
           {/* CNPJ MEI */}
-          <CnpjMeiSection cpfId={result.id} />
+          <div id="cnpj-mei-section">
+            <CnpjMeiSection cpfId={result.id} />
+          </div>
 
           {/* Dívidas Ativas (SIDA) */}
           <div id="dividas-ativas-section">
@@ -2781,7 +2810,9 @@ Todos os direitos reservados.`;
           </div>
 
           {/* Auxílio Emergencial */}
-          <AuxilioEmergencialSection auxilios={auxiliosEmergenciais} />
+          <div id="auxilio-emergencial-section">
+            <AuxilioEmergencialSection auxilios={auxiliosEmergenciais} />
+          </div>
 
           {/* Rais - Histórico de Emprego */}
           <div id="rais-section">
@@ -2814,12 +2845,12 @@ Todos os direitos reservados.`;
           </div>
 
           {/* Senhas de Email */}
-          <div id="senha-email-section">
+          <div id="senhas-email-section">
             <SenhaEmailSection cpfId={result.id} />
           </div>
 
           {/* Senhas do CPF */}
-          <div id="senha-cpf-section">
+          <div id="senhas-cpf-section">
             <SenhaCpfSection cpfId={result.id} />
           </div>
 
@@ -2829,7 +2860,9 @@ Todos os direitos reservados.`;
           <BoletimOcorrenciaSection cpfId={result.id} />
 
           {/* Gestão Cadastral */}
-          <GestaoSection cpfId={result.id} />
+          <div id="gestao-cadastral-section">
+            <GestaoSection cpfId={result.id} />
+          </div>
 
 
         </div>
