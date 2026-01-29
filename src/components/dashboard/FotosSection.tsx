@@ -240,15 +240,20 @@ const FotosSection: React.FC<FotosSectionProps> = ({ cpfId, cpfNumber }) => {
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge variant="secondary" className="uppercase tracking-wide">
-              Online
-            </Badge>
-
-            {fotos.length > 0 && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {fotos.length}
+            <div className="relative inline-flex">
+              <Badge variant="secondary" className="uppercase tracking-wide">
+                Online
               </Badge>
-            )}
+
+              {fotos.length > 0 ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1 text-[11px] font-semibold leading-none text-destructive-foreground"
+                  aria-label={`Quantidade de fotos: ${fotos.length}`}
+                >
+                  {fotos.length}
+                </span>
+              ) : null}
+            </div>
           </div>
         </div>
       </CardHeader>
