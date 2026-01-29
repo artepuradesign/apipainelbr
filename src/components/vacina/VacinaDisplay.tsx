@@ -11,9 +11,10 @@ import { toast } from "sonner";
 
 interface VacinaDisplayProps {
   cpfId: number;
+  onCountChange?: (count: number) => void;
 }
 
-const VacinaDisplay = ({ cpfId }: VacinaDisplayProps) => {
+const VacinaDisplay = ({ cpfId, onCountChange }: VacinaDisplayProps) => {
   const [vacinas, setVacinas] = useState<BaseVacina[]>([]);
   const [loading, setLoading] = useState(true);
   const { getVacinasByCpfId } = useBaseVacina();
@@ -39,6 +40,10 @@ const VacinaDisplay = ({ cpfId }: VacinaDisplayProps) => {
 
     loadVacinas();
   }, [cpfId, getVacinasByCpfId]);
+
+  useEffect(() => {
+    onCountChange?.(vacinas.length);
+  }, [onCountChange, vacinas.length]);
 
   const copyVacinasData = () => {
     if (vacinas.length === 0) return;
@@ -144,18 +149,22 @@ const VacinaDisplay = ({ cpfId }: VacinaDisplayProps) => {
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge
-              variant="secondary"
-              className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
-            >
-              Online
-            </Badge>
-
-            {hasData && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {vacinas.length}
+            <div className="relative inline-flex">
+              <Badge
+                variant="secondary"
+                className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
+              >
+                Online
               </Badge>
-            )}
+              {hasData ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                  aria-label={`Quantidade de vacinas: ${vacinas.length}`}
+                >
+                  {vacinas.length}
+                </span>
+              ) : null}
+            </div>
 
             {hasData && (
               <Button

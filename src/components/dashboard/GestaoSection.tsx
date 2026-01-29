@@ -25,9 +25,10 @@ const formatValue = (value: any): string => {
 
  interface GestaoSectionProps {
    cpfId?: number;
+   onCountChange?: (count: number) => void;
  }
  
- const GestaoSection: React.FC<GestaoSectionProps> = ({ cpfId }) => {
+ const GestaoSection: React.FC<GestaoSectionProps> = ({ cpfId, onCountChange }) => {
    const { isLoading, getGestaoByCpfId } = useBaseGestao();
    const [items, setItems] = useState<BaseGestao[]>([]);
  
@@ -39,6 +40,10 @@ const formatValue = (value: any): string => {
      };
      load();
    }, [cpfId, getGestaoByCpfId]);
+
+   useEffect(() => {
+     onCountChange?.(items.length);
+   }, [items.length, onCountChange]);
  
      const hasData = useMemo(() => items.length > 0, [items]);
      // Quando houver dados, destacamos (verde). Sem dados, fica neutro.
@@ -142,21 +147,25 @@ const formatValue = (value: any): string => {
              <span className="truncate">Gestão Cadastral</span>
            </CardTitle>
  
-             <div className="flex items-center gap-2 flex-shrink-0">
-               <Badge
-                 variant="secondary"
-                 className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
-               >
-                 Online
-               </Badge>
- 
-               {items.length > 0 && (
-                 <Badge variant="secondary" className={hasData ? 'bg-success text-success-foreground' : ''}>
-                  {items.length}
-                </Badge>
-              )}
- 
-             {hasData && (
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <div className="relative inline-flex">
+                  <Badge
+                    variant="secondary"
+                    className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
+                  >
+                    Online
+                  </Badge>
+                  {items.length > 0 ? (
+                    <span
+                      className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                      aria-label={`Quantidade de registros de gestão cadastral: ${items.length}`}
+                    >
+                      {items.length}
+                    </span>
+                  ) : null}
+                </div>
+
+              {hasData && (
                <Button
                  variant="ghost"
                  size="icon"

@@ -10,9 +10,10 @@ import { toast } from "sonner";
 
 interface CnpjMeiSectionProps {
   cpfId: number;
+  onCountChange?: (count: number) => void;
 }
 
-const CnpjMeiSection: React.FC<CnpjMeiSectionProps> = ({ cpfId }) => {
+const CnpjMeiSection: React.FC<CnpjMeiSectionProps> = ({ cpfId, onCountChange }) => {
   const { getCnpjMeisByCpfId, cnpjMeis, isLoading, clearData } = useBaseCnpjMei();
   const [dataLoaded, setDataLoaded] = useState(false);
   const lastCpfIdRef = useRef<number | null>(null);
@@ -41,6 +42,10 @@ const CnpjMeiSection: React.FC<CnpjMeiSectionProps> = ({ cpfId }) => {
       });
     }
   }, [cpfId, getCnpjMeisByCpfId, dataLoaded]);
+
+  useEffect(() => {
+    onCountChange?.(cnpjMeis?.length ?? 0);
+  }, [cnpjMeis?.length, onCountChange]);
 
   const copyCnpjMeiData = () => {
     if (!cnpjMeis || cnpjMeis.length === 0) return;
@@ -132,18 +137,22 @@ const CnpjMeiSection: React.FC<CnpjMeiSectionProps> = ({ cpfId }) => {
           </div>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge
-              variant="secondary"
-              className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
-            >
-              Online
-            </Badge>
-
-            {hasData && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {cnpjMeis.length}
+            <div className="relative inline-flex">
+              <Badge
+                variant="secondary"
+                className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
+              >
+                Online
               </Badge>
-            )}
+              {hasData ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                  aria-label={`Quantidade de CNPJ MEI: ${cnpjMeis.length}`}
+                >
+                  {cnpjMeis.length}
+                </span>
+              ) : null}
+            </div>
 
             {hasData && (
               <Button

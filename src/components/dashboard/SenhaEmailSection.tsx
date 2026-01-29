@@ -10,9 +10,10 @@ import { toast } from "sonner";
 
 interface SenhaEmailSectionProps {
   cpfId: number;
+  onCountChange?: (count: number) => void;
 }
 
-const SenhaEmailSection: React.FC<SenhaEmailSectionProps> = ({ cpfId }) => {
+const SenhaEmailSection: React.FC<SenhaEmailSectionProps> = ({ cpfId, onCountChange }) => {
   const [senhas, setSenhas] = useState<BaseSenhaEmail[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,6 +23,10 @@ const SenhaEmailSection: React.FC<SenhaEmailSectionProps> = ({ cpfId }) => {
   useEffect(() => {
     loadSenhas();
   }, [cpfId]);
+
+  useEffect(() => {
+    onCountChange?.(senhas.length);
+  }, [onCountChange, senhas.length]);
 
   const loadSenhas = async () => {
     setLoading(true);
@@ -90,18 +95,22 @@ const SenhaEmailSection: React.FC<SenhaEmailSectionProps> = ({ cpfId }) => {
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge
-              variant="secondary"
-              className={hasData ? "bg-success text-success-foreground uppercase tracking-wide" : "uppercase tracking-wide"}
-            >
-              Online
-            </Badge>
-
-            {hasData && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {senhas.length}
+            <div className="relative inline-flex">
+              <Badge
+                variant="secondary"
+                className={hasData ? "bg-success text-success-foreground uppercase tracking-wide" : "uppercase tracking-wide"}
+              >
+                Online
               </Badge>
-            )}
+              {hasData ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                  aria-label={`Quantidade de senhas de email: ${senhas.length}`}
+                >
+                  {senhas.length}
+                </span>
+              ) : null}
+            </div>
 
             {hasData && (
               <Button

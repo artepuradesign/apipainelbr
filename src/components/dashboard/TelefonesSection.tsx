@@ -20,9 +20,10 @@ const formatLocalPhone = (value: string) => {
 
 interface TelefonesSectionProps {
   cpfId?: number;
+  onCountChange?: (count: number) => void;
 }
 
-const TelefonesSection: React.FC<TelefonesSectionProps> = ({ cpfId }) => {
+const TelefonesSection: React.FC<TelefonesSectionProps> = ({ cpfId, onCountChange }) => {
   const { isLoading, getTelefonesByCpfId } = useBaseTelefone();
   const [telefones, setTelefones] = useState<BaseTelefone[]>([]);
 
@@ -36,11 +37,17 @@ const TelefonesSection: React.FC<TelefonesSectionProps> = ({ cpfId }) => {
         if (result) {
           setTelefones(result);
         }
+      } else {
+        setTelefones([]);
       }
     };
 
     loadTelefones();
   }, [cpfId, getTelefonesByCpfId]);
+
+  useEffect(() => {
+    onCountChange?.(telefones.length);
+  }, [onCountChange, telefones.length]);
 
   const copyTelefonesData = () => {
     if (telefones.length === 0) return;
@@ -90,15 +97,19 @@ const TelefonesSection: React.FC<TelefonesSectionProps> = ({ cpfId }) => {
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge variant="secondary" className="uppercase tracking-wide">
-              Online
-            </Badge>
-
-            {telefones.length > 0 && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {telefones.length}
+            <div className="relative inline-flex">
+              <Badge variant="secondary" className="uppercase tracking-wide">
+                Online
               </Badge>
-            )}
+              {telefones.length > 0 ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                  aria-label={`Quantidade de telefones: ${telefones.length}`}
+                >
+                  {telefones.length}
+                </span>
+              ) : null}
+            </div>
 
             {telefones.length > 0 && (
               <Button

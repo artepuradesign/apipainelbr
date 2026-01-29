@@ -12,9 +12,10 @@ import { toast } from "sonner";
 
 interface EmpresasSocioSectionProps {
   cpfId: number;
+  onCountChange?: (count: number) => void;
 }
 
-const EmpresasSocioSection: React.FC<EmpresasSocioSectionProps> = ({ cpfId }) => {
+const EmpresasSocioSection: React.FC<EmpresasSocioSectionProps> = ({ cpfId, onCountChange }) => {
   const [empresas, setEmpresas] = useState<BaseEmpresaSocio[]>([]);
   const [loading, setLoading] = useState(true);
   const { getEmpresasSocioByCpfId } = useBaseEmpresaSocio();
@@ -25,6 +26,10 @@ const EmpresasSocioSection: React.FC<EmpresasSocioSectionProps> = ({ cpfId }) =>
   useEffect(() => {
     loadEmpresas();
   }, [cpfId]);
+
+  useEffect(() => {
+    onCountChange?.(empresas.length);
+  }, [onCountChange, empresas.length]);
 
   const loadEmpresas = async () => {
     setLoading(true);
@@ -130,18 +135,22 @@ const EmpresasSocioSection: React.FC<EmpresasSocioSectionProps> = ({ cpfId }) =>
           </div>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge
-              variant="secondary"
-              className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
-            >
-              Online
-            </Badge>
-
-            {hasData && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {empresas.length}
+            <div className="relative inline-flex">
+              <Badge
+                variant="secondary"
+                className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
+              >
+                Online
               </Badge>
-            )}
+              {hasData ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                  aria-label={`Quantidade de empresas sócio: ${empresas.length}`}
+                >
+                  {empresas.length}
+                </span>
+              ) : null}
+            </div>
 
             {hasData && (
               <Button

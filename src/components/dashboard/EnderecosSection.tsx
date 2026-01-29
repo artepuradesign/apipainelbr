@@ -10,9 +10,10 @@ import { toast } from "sonner";
 
 interface EnderecosSectionProps {
   cpfId?: number;
+  onCountChange?: (count: number) => void;
 }
 
-const EnderecosSection: React.FC<EnderecosSectionProps> = ({ cpfId }) => {
+const EnderecosSection: React.FC<EnderecosSectionProps> = ({ cpfId, onCountChange }) => {
   const { isLoading, getEnderecosByCpfId } = useBaseEndereco();
   const [enderecos, setEnderecos] = useState<BaseEndereco[]>([]);
 
@@ -26,11 +27,17 @@ const EnderecosSection: React.FC<EnderecosSectionProps> = ({ cpfId }) => {
         if (result) {
           setEnderecos(result);
         }
+      } else {
+        setEnderecos([]);
       }
     };
 
     loadEnderecos();
   }, [cpfId, getEnderecosByCpfId]);
+
+  useEffect(() => {
+    onCountChange?.(enderecos.length);
+  }, [onCountChange, enderecos.length]);
 
   const copyEnderecosData = () => {
     if (enderecos.length === 0) return;
@@ -79,15 +86,19 @@ const EnderecosSection: React.FC<EnderecosSectionProps> = ({ cpfId }) => {
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge variant="secondary" className="uppercase tracking-wide">
-              Online
-            </Badge>
-
-            {enderecos.length > 0 && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {enderecos.length}
+            <div className="relative inline-flex">
+              <Badge variant="secondary" className="uppercase tracking-wide">
+                Online
               </Badge>
-            )}
+              {enderecos.length > 0 ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                  aria-label={`Quantidade de endereços: ${enderecos.length}`}
+                >
+                  {enderecos.length}
+                </span>
+              ) : null}
+            </div>
 
             {enderecos.length > 0 && (
               <Button
