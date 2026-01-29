@@ -577,6 +577,7 @@ const ConsultarCpfPuxaTudo = () => {
   const [cpf, setCpf] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<CPFResult | null>(null);
+  const [fotosCount, setFotosCount] = useState(0);
   const [receitaData, setReceitaData] = useState<BaseReceita | null>(null);
   const [queryHistory, setQueryHistory] = useState<any[]>([]);
   const [recentConsultations, setRecentConsultations] = useState<any[]>([]);
@@ -2265,9 +2266,25 @@ Todos os direitos reservados.`;
                   <div className="flex flex-wrap gap-2">
                     {onlineBadges.map((b) => (
                       <a key={b.href} href={b.href} className="no-underline">
-                        <Badge variant="secondary" className={badgeClassName}>
-                          {b.label}
-                        </Badge>
+                        {b.href === '#fotos-section' ? (
+                          <span className="relative inline-flex">
+                            <Badge variant="secondary" className={badgeClassName}>
+                              {b.label}
+                            </Badge>
+                            {fotosCount > 0 ? (
+                              <span
+                                className="absolute -top-2 -right-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1 text-[11px] font-semibold leading-none text-destructive-foreground"
+                                aria-label={`Quantidade de fotos: ${fotosCount}`}
+                              >
+                                {fotosCount}
+                              </span>
+                            ) : null}
+                          </span>
+                        ) : (
+                          <Badge variant="secondary" className={badgeClassName}>
+                            {b.label}
+                          </Badge>
+                        )}
                       </a>
                     ))}
                   </div>
@@ -2278,7 +2295,7 @@ Todos os direitos reservados.`;
 
           {/* Fotos - Usando FotosSection para consistência */}
           <div id="fotos-section">
-            <FotosSection cpfId={result.id} cpfNumber={result.cpf} />
+            <FotosSection cpfId={result.id} cpfNumber={result.cpf} onCountChange={setFotosCount} />
           </div>
 
           {/* Dados Financeiros */}

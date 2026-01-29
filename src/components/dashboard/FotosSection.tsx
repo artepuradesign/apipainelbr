@@ -11,9 +11,10 @@ import PhotoZoomOverlay from '@/components/ui/PhotoZoomOverlay';
 interface FotosSectionProps {
   cpfId: number;
   cpfNumber: string;
+  onCountChange?: (count: number) => void;
 }
 
-const FotosSection: React.FC<FotosSectionProps> = ({ cpfId, cpfNumber }) => {
+const FotosSection: React.FC<FotosSectionProps> = ({ cpfId, cpfNumber, onCountChange }) => {
   const [fotos, setFotos] = useState<BaseFoto[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -33,12 +34,15 @@ const FotosSection: React.FC<FotosSectionProps> = ({ cpfId, cpfNumber }) => {
       
       if (response.success && response.data) {
         setFotos(response.data);
+        onCountChange?.(response.data.length);
       } else {
         setFotos([]);
+        onCountChange?.(0);
       }
     } catch (error) {
       console.error('Erro ao carregar fotos:', error);
       setFotos([]);
+      onCountChange?.(0);
     } finally {
       setLoading(false);
     }
