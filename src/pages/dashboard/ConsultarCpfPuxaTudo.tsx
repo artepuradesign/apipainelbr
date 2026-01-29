@@ -2230,12 +2230,12 @@ Todos os direitos reservados.`;
                 // mantendo a mesma ordem em que as seções aparecem na página.
                 const onlineBadges = [
                   { href: '#fotos-section', label: 'Fotos' },
+                  { href: '#dados-financeiros-section', label: 'Dados Financeiros' },
                   { href: '#dados-basicos-section', label: 'Dados Básicos' },
                   { href: '#telefones-section', label: 'Telefones' },
                   { href: '#emails-section', label: 'Emails' },
                   { href: '#enderecos-section', label: 'Endereços' },
                   { href: '#titulo-eleitor-section', label: 'Título de Eleitor' },
-                  { href: '#dados-financeiros-section', label: 'Dados Financeiros' },
                   { href: '#score-section', label: 'Score' },
                   { href: '#parentes-section', label: 'Parentes' },
                   { href: '#certidao-nascimento-section', label: 'Certidão de Nascimento' },
@@ -2280,6 +2280,95 @@ Todos os direitos reservados.`;
           <div id="fotos-section">
             <FotosSection cpfId={result.id} cpfNumber={result.cpf} />
           </div>
+
+          {/* Dados Financeiros */}
+          <Card id="dados-financeiros-section" className={onlineCardClass(hasDadosFinanceiros)}>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
+                  <DollarSign className="h-5 w-5" />
+                  Dados Financeiros
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary" className="uppercase tracking-wide">
+                    Online
+                  </Badge>
+
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      const dados = [
+                        `Poder Aquisitivo: ${result.poder_aquisitivo || '-'}`,
+                        `Renda: ${formatRenda(result.renda) || '-'}`,
+                        `Faixa Poder Aquisitivo: ${result.fx_poder_aquisitivo || '-'}`,
+                        `CSB8: ${result.csb8 || '-'}`,
+                        `FAIXA: CSB8 [SCORE]: ${result.csb8_faixa || '-'}`,
+                        `CSBA: ${result.csba || '-'}`,
+                        `FAIXA: CSBA [SCORE]: ${result.csba_faixa || '-'}`,
+                      ].join('\n');
+                      navigator.clipboard.writeText(dados);
+                      toast.success('Dados financeiros copiados!');
+                    }}
+                    className="h-8 w-8"
+                    title="Copiar dados da seção"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              {/* Score Cards - CSB8 e CSBA com gráficos */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <ScoreGaugeCard
+                  title="CSB8 [SCORE]"
+                  score={result.csb8}
+                  faixa={result.csb8_faixa}
+                  icon="chart"
+                />
+                <ScoreGaugeCard
+                  title="CSBA [SCORE]"
+                  score={result.csba}
+                  faixa={result.csba_faixa}
+                  icon="trending"
+                />
+              </div>
+
+              {/* Outros dados financeiros */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 border-t border-border">
+                <div>
+                  <Label htmlFor="poder_aquisitivo">Poder Aquisitivo</Label>
+                  <Input
+                    id="poder_aquisitivo"
+                    value={result.poder_aquisitivo || ''}
+                    disabled
+                    className="uppercase text-[14px] md:text-sm"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="renda">Renda</Label>
+                  <Input
+                    id="renda"
+                    value={formatRenda(result.renda)}
+                    disabled
+                    className="text-[14px] md:text-sm"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="fx_poder_aquisitivo">Faixa Poder Aquisitivo</Label>
+                  <Input
+                    id="fx_poder_aquisitivo"
+                    value={result.fx_poder_aquisitivo || ''}
+                    disabled
+                    className="uppercase text-[14px] md:text-sm"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Dados Básicos */}
           <Card id="dados-basicos-section" className={onlineCardClass(hasDadosBasicos) ? `w-full ${onlineCardClass(hasDadosBasicos)}` : "w-full"}>
@@ -2572,95 +2661,6 @@ Todos os direitos reservados.`;
                     value={result.secao || ''}
                     disabled
                     className="bg-muted text-[14px] md:text-sm"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Dados Financeiros */}
-          <Card id="dados-financeiros-section" className={onlineCardClass(hasDadosFinanceiros)}>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
-                  <DollarSign className="h-5 w-5" />
-                  Dados Financeiros
-                </CardTitle>
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="uppercase tracking-wide">
-                    Online
-                  </Badge>
-
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      const dados = [
-                        `Poder Aquisitivo: ${result.poder_aquisitivo || '-'}`,
-                        `Renda: ${formatRenda(result.renda) || '-'}`,
-                        `Faixa Poder Aquisitivo: ${result.fx_poder_aquisitivo || '-'}`,
-                        `CSB8: ${result.csb8 || '-'}`,
-                        `FAIXA: CSB8 [SCORE]: ${result.csb8_faixa || '-'}`,
-                        `CSBA: ${result.csba || '-'}`,
-                        `FAIXA: CSBA [SCORE]: ${result.csba_faixa || '-'}`,
-                      ].join('\n');
-                      navigator.clipboard.writeText(dados);
-                      toast.success('Dados financeiros copiados!');
-                    }}
-                    className="h-8 w-8"
-                    title="Copiar dados da seção"
-                  >
-                    <Copy className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {/* Score Cards - CSB8 e CSBA com gráficos */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <ScoreGaugeCard
-                  title="CSB8 [SCORE]"
-                  score={result.csb8}
-                  faixa={result.csb8_faixa}
-                  icon="chart"
-                />
-                <ScoreGaugeCard
-                  title="CSBA [SCORE]"
-                  score={result.csba}
-                  faixa={result.csba_faixa}
-                  icon="trending"
-                />
-              </div>
-
-              {/* Outros dados financeiros */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 border-t border-border">
-                <div>
-                  <Label htmlFor="poder_aquisitivo">Poder Aquisitivo</Label>
-                  <Input
-                    id="poder_aquisitivo"
-                    value={result.poder_aquisitivo || ''}
-                    disabled
-                    className="uppercase text-[14px] md:text-sm"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="renda">Renda</Label>
-                  <Input
-                    id="renda"
-                    value={formatRenda(result.renda)}
-                    disabled
-                    className="text-[14px] md:text-sm"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="fx_poder_aquisitivo">Faixa Poder Aquisitivo</Label>
-                  <Input
-                    id="fx_poder_aquisitivo"
-                    value={result.fx_poder_aquisitivo || ''}
-                    disabled
-                    className="uppercase text-[14px] md:text-sm"
                   />
                 </div>
               </div>
