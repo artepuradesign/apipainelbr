@@ -86,6 +86,18 @@ const EnderecosSection: React.FC<EnderecosSectionProps> = ({ cpfId, onCountChang
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
+            {enderecos.length > 0 && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={copyEnderecosData}
+                className="h-8 w-8"
+                title="Copiar dados da seção"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            )}
+
             <div className="relative inline-flex">
               <Badge variant="secondary" className="uppercase tracking-wide">
                 Online
@@ -99,18 +111,6 @@ const EnderecosSection: React.FC<EnderecosSectionProps> = ({ cpfId, onCountChang
                 </span>
               ) : null}
             </div>
-
-            {enderecos.length > 0 && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={copyEnderecosData}
-                className="h-8 w-8"
-                title="Copiar dados da seção"
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
-            )}
           </div>
         </div>
       </CardHeader>

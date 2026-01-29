@@ -164,6 +164,18 @@ const OperadoraTimSection: React.FC<OperadoraTimSectionProps> = ({ cpfId, onCoun
           </div>
 
           <div className="flex items-center gap-2 flex-shrink-0">
+            {hasData && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={copyTimData}
+                className="h-8 w-8"
+                title="Copiar dados da se\u00e7\u00e3o"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            )}
+
             <div className="relative inline-flex">
               <Badge
                 variant="secondary"
@@ -180,18 +192,6 @@ const OperadoraTimSection: React.FC<OperadoraTimSectionProps> = ({ cpfId, onCoun
                 </span>
               ) : null}
             </div>
-
-            {hasData && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={copyTimData}
-                className="h-8 w-8"
-                title="Copiar dados da se\u00e7\u00e3o"
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
-            )}
           </div>
         </div>
       </CardHeader>

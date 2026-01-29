@@ -148,6 +148,18 @@ const formatValue = (value: any): string => {
            </CardTitle>
  
               <div className="flex items-center gap-2 flex-shrink-0">
+                 {hasData && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => copyData(items[0])}
+                    className="h-8 w-8"
+                    title="Copiar dados da seção"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                )}
+
                 <div className="relative inline-flex">
                   <Badge
                     variant="secondary"
@@ -164,18 +176,6 @@ const formatValue = (value: any): string => {
                     </span>
                   ) : null}
                 </div>
-
-              {hasData && (
-               <Button
-                 variant="ghost"
-                 size="icon"
-                 onClick={() => copyData(items[0])}
-                 className="h-8 w-8"
-                 title="Copiar dados da seção"
-               >
-                 <Copy className="h-4 w-4" />
-               </Button>
-             )}
            </div>
          </div>
        </CardHeader>
