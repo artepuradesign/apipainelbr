@@ -142,6 +142,18 @@ export const AuxilioEmergencialSection = ({ auxilios }: AuxilioEmergencialSectio
           </div>
 
           <div className="flex items-center gap-2 flex-shrink-0">
+            {hasData && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={copyAuxiliosData}
+                className="h-8 w-8"
+                title="Copiar dados da seção"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            )}
+
             <Badge
               variant="secondary"
               className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
@@ -153,18 +165,6 @@ export const AuxilioEmergencialSection = ({ auxilios }: AuxilioEmergencialSectio
               <Badge variant="secondary" className="bg-success text-success-foreground">
                 {auxilios.length}
               </Badge>
-            )}
-
-            {hasData && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={copyAuxiliosData}
-                className="h-8 w-8"
-                title="Copiar dados da seção"
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
             )}
           </div>
         </div>

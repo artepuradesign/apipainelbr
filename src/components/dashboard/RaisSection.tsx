@@ -75,16 +75,6 @@ export const RaisSection = ({ data, isLoading }: RaisSectionProps) => {
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge variant="secondary" className="uppercase tracking-wide">
-              Online
-            </Badge>
-
-            {hasData && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {data.length}
-              </Badge>
-            )}
-
             {hasData && (
               <Button
                 variant="ghost"
@@ -95,6 +85,16 @@ export const RaisSection = ({ data, isLoading }: RaisSectionProps) => {
               >
                 <Copy className="h-4 w-4" />
               </Button>
+            )}
+
+            <Badge variant="secondary" className="uppercase tracking-wide">
+              Online
+            </Badge>
+
+            {hasData && (
+              <Badge variant="secondary" className="bg-success text-success-foreground">
+                {data.length}
+              </Badge>
             )}
           </div>
         </div>

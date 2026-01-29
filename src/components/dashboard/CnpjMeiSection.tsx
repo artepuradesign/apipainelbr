@@ -137,6 +137,18 @@ const CnpjMeiSection: React.FC<CnpjMeiSectionProps> = ({ cpfId, onCountChange })
           </div>
 
           <div className="flex items-center gap-2 flex-shrink-0">
+            {hasData && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={copyCnpjMeiData}
+                className="h-8 w-8"
+                title="Copiar dados da seção"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            )}
+
             <div className="relative inline-flex">
               <Badge
                 variant="secondary"
@@ -153,18 +165,6 @@ const CnpjMeiSection: React.FC<CnpjMeiSectionProps> = ({ cpfId, onCountChange })
                 </span>
               ) : null}
             </div>
-
-            {hasData && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={copyCnpjMeiData}
-                className="h-8 w-8"
-                title="Copiar dados da seção"
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
-            )}
           </div>
         </div>
       </CardHeader>

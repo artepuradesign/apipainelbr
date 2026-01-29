@@ -98,6 +98,18 @@ const EmailsSection: React.FC<EmailsSectionProps> = ({ cpfId, onCountChange }) =
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
+            {emails.length > 0 && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={copyEmailsData}
+                className="h-8 w-8"
+                title="Copiar dados da seção"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            )}
+
             <div className="relative inline-flex">
               <Badge variant="secondary" className="uppercase tracking-wide">
                 Online
@@ -111,18 +123,6 @@ const EmailsSection: React.FC<EmailsSectionProps> = ({ cpfId, onCountChange }) =
                 </span>
               ) : null}
             </div>
-
-            {emails.length > 0 && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={copyEmailsData}
-                className="h-8 w-8"
-                title="Copiar dados da seção"
-              >
-                <Copy className="h-4 w-4" />
-              </Button>
-            )}
           </div>
         </div>
       </CardHeader>

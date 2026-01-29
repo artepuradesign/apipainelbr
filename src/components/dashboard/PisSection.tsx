@@ -44,13 +44,6 @@ const PisSection: React.FC<PisSectionProps> = ({ pis }) => {
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge
-              variant="secondary"
-              className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
-            >
-              Online
-            </Badge>
-
             {hasData && (
               <Button
                 variant="ghost"
@@ -62,6 +55,13 @@ const PisSection: React.FC<PisSectionProps> = ({ pis }) => {
                 <Copy className="h-4 w-4" />
               </Button>
             )}
+
+            <Badge
+              variant="secondary"
+              className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
+            >
+              Online
+            </Badge>
           </div>
         </div>
       </CardHeader>
