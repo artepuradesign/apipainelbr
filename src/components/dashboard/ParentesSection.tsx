@@ -12,9 +12,10 @@ import { toast } from "sonner";
 
 interface ParentesSectionProps {
   cpfId: number;
+  onCountChange?: (count: number) => void;
 }
 
-const ParentesSection: React.FC<ParentesSectionProps> = ({ cpfId }) => {
+const ParentesSection: React.FC<ParentesSectionProps> = ({ cpfId, onCountChange }) => {
   const [parentes, setParentes] = useState<BaseParente[]>([]);
   const [loading, setLoading] = useState(true);
   const { getParentesByCpfId } = useBaseParente();
@@ -26,6 +27,10 @@ const ParentesSection: React.FC<ParentesSectionProps> = ({ cpfId }) => {
     console.info('[Parentes][UI] Mount/Update -> cpfId:', cpfId);
     loadParentes();
   }, [cpfId]);
+
+  useEffect(() => {
+    onCountChange?.(parentes.length);
+  }, [onCountChange, parentes.length]);
 
   const loadParentes = async () => {
     setLoading(true);
@@ -85,15 +90,19 @@ const ParentesSection: React.FC<ParentesSectionProps> = ({ cpfId }) => {
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge variant="secondary" className="uppercase tracking-wide">
-              Online
-            </Badge>
-
-            {parentes.length > 0 && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {parentes.length}
+            <div className="relative inline-flex">
+              <Badge variant="secondary" className="uppercase tracking-wide">
+                Online
               </Badge>
-            )}
+              {parentes.length > 0 ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                  aria-label={`Quantidade de parentes: ${parentes.length}`}
+                >
+                  {parentes.length}
+                </span>
+              ) : null}
+            </div>
 
             {parentes.length > 0 && (
               <Button

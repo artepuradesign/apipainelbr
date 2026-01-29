@@ -10,9 +10,10 @@ import { toast } from "sonner";
 
 interface VivoSectionProps {
   cpfId: number;
+  onCountChange?: (count: number) => void;
 }
 
-const VivoSection: React.FC<VivoSectionProps> = ({ cpfId }) => {
+const VivoSection: React.FC<VivoSectionProps> = ({ cpfId, onCountChange }) => {
   const { getVivosByCpfId, vivos, isLoading } = useBaseVivo();
   const [dataLoaded, setDataLoaded] = useState(false);
   const hasData = (vivos?.length || 0) > 0;
@@ -25,6 +26,10 @@ const VivoSection: React.FC<VivoSectionProps> = ({ cpfId }) => {
       });
     }
   }, [cpfId, getVivosByCpfId, dataLoaded]);
+
+  useEffect(() => {
+    onCountChange?.(vivos?.length ?? 0);
+  }, [onCountChange, vivos?.length]);
 
   const copyVivoData = () => {
     if (!vivos || vivos.length === 0) return;
@@ -109,15 +114,19 @@ const VivoSection: React.FC<VivoSectionProps> = ({ cpfId }) => {
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge variant="secondary" className="uppercase tracking-wide">
-              Online
-            </Badge>
-
-            {hasData && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {vivos.length}
+            <div className="relative inline-flex">
+              <Badge variant="secondary" className="uppercase tracking-wide">
+                Online
               </Badge>
-            )}
+              {hasData ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                  aria-label={`Quantidade de registros Operadora Vivo: ${vivos.length}`}
+                >
+                  {vivos.length}
+                </span>
+              ) : null}
+            </div>
 
             {hasData && (
               <Button

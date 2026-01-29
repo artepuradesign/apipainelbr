@@ -11,6 +11,7 @@ import type { BaseOperadoraTim } from '@/services/baseOperadoraTimService';
 
 interface OperadoraTimSectionProps {
   cpfId: number;
+  onCountChange?: (count: number) => void;
 }
 
 const display = (v: unknown) => {
@@ -19,7 +20,7 @@ const display = (v: unknown) => {
   return s.length ? s : undefined;
 };
 
-const OperadoraTimSection: React.FC<OperadoraTimSectionProps> = ({ cpfId }) => {
+const OperadoraTimSection: React.FC<OperadoraTimSectionProps> = ({ cpfId, onCountChange }) => {
   const { getOperadoraTimByCpfId, registros, isLoading, clearData } = useBaseOperadoraTim();
   const [dataLoaded, setDataLoaded] = useState(false);
   const lastCpfIdRef = useRef<number | null>(null);
@@ -44,6 +45,10 @@ const OperadoraTimSection: React.FC<OperadoraTimSectionProps> = ({ cpfId }) => {
       getOperadoraTimByCpfId(cpfId).finally(() => setDataLoaded(true));
     }
   }, [cpfId, dataLoaded, getOperadoraTimByCpfId]);
+
+  useEffect(() => {
+    onCountChange?.(registros?.length ?? 0);
+  }, [onCountChange, registros?.length]);
 
   const copyTimData = () => {
     if (!registros || registros.length === 0) return;
@@ -159,18 +164,22 @@ const OperadoraTimSection: React.FC<OperadoraTimSectionProps> = ({ cpfId }) => {
           </div>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge
-              variant="secondary"
-              className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
-            >
-              Online
-            </Badge>
-
-            {hasData && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {registros.length}
+            <div className="relative inline-flex">
+              <Badge
+                variant="secondary"
+                className={hasData ? 'bg-success text-success-foreground uppercase tracking-wide' : 'uppercase tracking-wide'}
+              >
+                Online
               </Badge>
-            )}
+              {hasData ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                  aria-label={`Quantidade de registros Operadora TIM: ${registros.length}`}
+                >
+                  {registros.length}
+                </span>
+              ) : null}
+            </div>
 
             {hasData && (
               <Button

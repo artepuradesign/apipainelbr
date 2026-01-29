@@ -578,6 +578,23 @@ const ConsultarCpfPuxaTudo = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<CPFResult | null>(null);
   const [fotosCount, setFotosCount] = useState(0);
+  const [telefonesCount, setTelefonesCount] = useState(0);
+  const [emailsCount, setEmailsCount] = useState(0);
+  const [enderecosCount, setEnderecosCount] = useState(0);
+  const [parentesCount, setParentesCount] = useState(0);
+  const [cnsCount, setCnsCount] = useState(0);
+  const [vacinasCount, setVacinasCount] = useState(0);
+  const [empresasSocioCount, setEmpresasSocioCount] = useState(0);
+  const [cnpjMeiCount, setCnpjMeiCount] = useState(0);
+  const [dividasAtivasCount, setDividasAtivasCount] = useState(0);
+  const [inssCount, setInssCount] = useState(0);
+  const [claroCount, setClaroCount] = useState(0);
+  const [vivoCount, setVivoCount] = useState(0);
+  const [timCount, setTimCount] = useState(0);
+  const [oiCount, setOiCount] = useState(0);
+  const [senhaEmailCount, setSenhaEmailCount] = useState(0);
+  const [senhaCpfCount, setSenhaCpfCount] = useState(0);
+  const [gestaoCount, setGestaoCount] = useState(0);
   const [receitaData, setReceitaData] = useState<BaseReceita | null>(null);
   const [queryHistory, setQueryHistory] = useState<any[]>([]);
   const [recentConsultations, setRecentConsultations] = useState<any[]>([]);
@@ -2191,8 +2208,6 @@ Todos os direitos reservados.`;
           result.poder_aquisitivo,
           result.renda,
           result.fx_poder_aquisitivo,
-          result.csb8,
-          result.csba,
         ].some(hasValue);
 
         // Quando houver dados, usamos destaque sólido (sem transparência)
@@ -2229,9 +2244,11 @@ Todos os direitos reservados.`;
               {(() => {
                 // Exibir somente as sessões marcadas como "Online" (atalhos do topo),
                 // mantendo a mesma ordem em que as seções aparecem na página.
-                const onlineBadges = [
-                  { href: '#fotos-section', label: 'Fotos' },
-                  { href: '#dados-financeiros-section', label: 'Dados Financeiros' },
+                 const onlineBadges = [
+                   { href: '#fotos-section', label: 'Fotos' },
+                   { href: '#csb8-section', label: 'CSB8' },
+                   { href: '#csba-section', label: 'CSBA' },
+                   { href: '#dados-financeiros-section', label: 'Dados Financeiros' },
                   { href: '#dados-basicos-section', label: 'Dados Básicos' },
                   { href: '#telefones-section', label: 'Telefones' },
                   { href: '#emails-section', label: 'Emails' },
@@ -2259,34 +2276,54 @@ Todos os direitos reservados.`;
                   { href: '#gestao-cadastral-section', label: 'Gestão Cadastral' },
                 ] as const;
 
+                 const badgeCounts: Record<string, number> = {
+                   '#fotos-section': fotosCount,
+                   '#telefones-section': telefonesCount,
+                   '#emails-section': emailsCount,
+                   '#enderecos-section': enderecosCount,
+                   '#parentes-section': parentesCount,
+                   '#cns-section': cnsCount,
+                   '#vacinas-section': vacinasCount,
+                   '#empresas-socio-section': empresasSocioCount,
+                   '#cnpj-mei-section': cnpjMeiCount,
+                   '#dividas-ativas-section': dividasAtivasCount,
+                   '#auxilio-emergencial-section': auxiliosEmergenciais?.length ?? 0,
+                   '#rais-section': rais?.length ?? 0,
+                   '#inss-section': inssCount,
+                   '#claro-section': claroCount,
+                   '#vivo-section': vivoCount,
+                   '#tim-section': timCount,
+                   '#oi-section': oiCount,
+                   '#senhas-email-section': senhaEmailCount,
+                   '#senhas-cpf-section': senhaCpfCount,
+                   '#gestao-cadastral-section': gestaoCount,
+                 };
+
                 const badgeClassName =
                   'bg-success text-success-foreground hover:bg-success/80 cursor-pointer transition-colors text-xs';
 
                 return (
                   <div className="flex flex-wrap gap-2">
-                    {onlineBadges.map((b) => (
+                     {onlineBadges.map((b) => {
+                       const count = badgeCounts[b.href] ?? 0;
+                       return (
                       <a key={b.href} href={b.href} className="no-underline">
-                        {b.href === '#fotos-section' ? (
-                          <span className="relative inline-flex">
-                            <Badge variant="secondary" className={badgeClassName}>
-                              {b.label}
-                            </Badge>
-                            {fotosCount > 0 ? (
-                              <span
-                                 className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
-                                aria-label={`Quantidade de fotos: ${fotosCount}`}
-                              >
-                                {fotosCount}
-                              </span>
-                            ) : null}
-                          </span>
-                        ) : (
-                          <Badge variant="secondary" className={badgeClassName}>
-                            {b.label}
-                          </Badge>
-                        )}
+                         <span className="relative inline-flex">
+                           <Badge variant="secondary" className={badgeClassName}>
+                             {b.label}
+                           </Badge>
+                           {count > 0 ? (
+                             <span
+                               className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                               aria-label={`Quantidade de registros: ${count}`}
+                             >
+                               {count}
+                             </span>
+                           ) : null}
+                         </span>
                       </a>
-                    ))}
+                     );
+                     })}
                   </div>
                 );
               })()}
@@ -2297,6 +2334,78 @@ Todos os direitos reservados.`;
           <div id="fotos-section">
             <FotosSection cpfId={result.id} cpfNumber={result.cpf} onCountChange={setFotosCount} />
           </div>
+
+          {/* CSB8 */}
+          <Card id="csb8-section" className={onlineCardClass(hasValue(result.csb8) || hasValue(result.csb8_faixa))}>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
+                  <TrendingUp className="h-5 w-5" />
+                  CSB8
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary" className="uppercase tracking-wide">
+                    Online
+                  </Badge>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      const dados = [
+                        `CSB8: ${result.csb8 || '-'}`,
+                        `FAIXA: CSB8 [SCORE]: ${result.csb8_faixa || '-'}`,
+                      ].join('\n');
+                      navigator.clipboard.writeText(dados);
+                      toast.success('CSB8 copiado!');
+                    }}
+                    className="h-8 w-8"
+                    title="Copiar dados da seção"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <ScoreGaugeCard title="CSB8 [SCORE]" score={result.csb8} faixa={result.csb8_faixa} icon="chart" />
+            </CardContent>
+          </Card>
+
+          {/* CSBA */}
+          <Card id="csba-section" className={onlineCardClass(hasValue(result.csba) || hasValue(result.csba_faixa))}>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg lg:text-xl">
+                  <TrendingUp className="h-5 w-5" />
+                  CSBA
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary" className="uppercase tracking-wide">
+                    Online
+                  </Badge>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      const dados = [
+                        `CSBA: ${result.csba || '-'}`,
+                        `FAIXA: CSBA [SCORE]: ${result.csba_faixa || '-'}`,
+                      ].join('\n');
+                      navigator.clipboard.writeText(dados);
+                      toast.success('CSBA copiado!');
+                    }}
+                    className="h-8 w-8"
+                    title="Copiar dados da seção"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <ScoreGaugeCard title="CSBA [SCORE]" score={result.csba} faixa={result.csba_faixa} icon="trending" />
+            </CardContent>
+          </Card>
 
           {/* Dados Financeiros */}
           <Card id="dados-financeiros-section" className={onlineCardClass(hasDadosFinanceiros)}>
@@ -2319,10 +2428,6 @@ Todos os direitos reservados.`;
                         `Poder Aquisitivo: ${result.poder_aquisitivo || '-'}`,
                         `Renda: ${formatRenda(result.renda) || '-'}`,
                         `Faixa Poder Aquisitivo: ${result.fx_poder_aquisitivo || '-'}`,
-                        `CSB8: ${result.csb8 || '-'}`,
-                        `FAIXA: CSB8 [SCORE]: ${result.csb8_faixa || '-'}`,
-                        `CSBA: ${result.csba || '-'}`,
-                        `FAIXA: CSBA [SCORE]: ${result.csba_faixa || '-'}`,
                       ].join('\n');
                       navigator.clipboard.writeText(dados);
                       toast.success('Dados financeiros copiados!');
@@ -2336,22 +2441,6 @@ Todos os direitos reservados.`;
               </div>
             </CardHeader>
             <CardContent>
-              {/* Score Cards - CSB8 e CSBA com gráficos */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <ScoreGaugeCard
-                  title="CSB8 [SCORE]"
-                  score={result.csb8}
-                  faixa={result.csb8_faixa}
-                  icon="chart"
-                />
-                <ScoreGaugeCard
-                  title="CSBA [SCORE]"
-                  score={result.csba}
-                  faixa={result.csba_faixa}
-                  icon="trending"
-                />
-              </div>
-
               {/* Outros dados financeiros */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 border-t border-border">
                 <div>
@@ -2606,17 +2695,17 @@ Todos os direitos reservados.`;
 
            {/* Telefones */}
            <div id="telefones-section">
-             <TelefonesSection cpfId={result.id} />
+              <TelefonesSection cpfId={result.id} onCountChange={setTelefonesCount} />
            </div>
 
            {/* Emails */}
            <div id="emails-section">
-             <EmailsSection cpfId={result.id} />
+              <EmailsSection cpfId={result.id} onCountChange={setEmailsCount} />
            </div>
 
            {/* Endereços */}
            <div id="enderecos-section">
-             <EnderecosSection cpfId={result.id} />
+              <EnderecosSection cpfId={result.id} onCountChange={setEnderecosCount} />
            </div>
 
           {/* Título de Eleitor */}
@@ -2772,7 +2861,7 @@ Todos os direitos reservados.`;
 
           {/* Parentes */}
           <div id="parentes-section">
-            <ParentesSection cpfId={result.id} />
+            <ParentesSection cpfId={result.id} onCountChange={setParentesCount} />
           </div>
 
           {/* Cônjuge */}
@@ -2790,7 +2879,7 @@ Todos os direitos reservados.`;
 
           {/* CNS */}
           <div id="cns-section">
-            <CnsSection cpfId={result.id} />
+            <CnsSection cpfId={result.id} onCountChange={setCnsCount} />
           </div>
 
           {/* PIS */}
@@ -2808,22 +2897,22 @@ Todos os direitos reservados.`;
 
           {/* Covid */}
           <div id="vacinas-section">
-            <VacinaDisplay cpfId={result.id} />
+            <VacinaDisplay cpfId={result.id} onCountChange={setVacinasCount} />
           </div>
 
           {/* Empresas Associadas (SÓCIO) */}
           <div id="empresas-socio-section">
-            <EmpresasSocioSection cpfId={result.id} />
+            <EmpresasSocioSection cpfId={result.id} onCountChange={setEmpresasSocioCount} />
           </div>
 
           {/* CNPJ MEI */}
           <div id="cnpj-mei-section">
-            <CnpjMeiSection cpfId={result.id} />
+            <CnpjMeiSection cpfId={result.id} onCountChange={setCnpjMeiCount} />
           </div>
 
           {/* Dívidas Ativas (SIDA) */}
           <div id="dividas-ativas-section">
-            <DividasAtivasSection cpf={result.id.toString()} />
+            <DividasAtivasSection cpf={result.id.toString()} onCountChange={setDividasAtivasCount} />
           </div>
 
           {/* Auxílio Emergencial */}
@@ -2838,37 +2927,37 @@ Todos os direitos reservados.`;
 
           {/* INSS */}
           <div id="inss-section">
-            <InssSection cpfId={result.id} />
+            <InssSection cpfId={result.id} onCountChange={setInssCount} />
           </div>
 
           {/* Operadora Claro */}
           <div id="claro-section">
-            <ClaroSection cpfId={result.id} />
+            <ClaroSection cpfId={result.id} onCountChange={setClaroCount} />
           </div>
 
           {/* Operadora Vivo */}
           <div id="vivo-section">
-            <VivoSection cpfId={result.id} />
+            <VivoSection cpfId={result.id} onCountChange={setVivoCount} />
           </div>
 
           {/* Operadora Tim */}
           <div id="tim-section">
-            <OperadoraTimSection cpfId={result.id} />
+            <OperadoraTimSection cpfId={result.id} onCountChange={setTimCount} />
           </div>
 
           {/* Operadora OI */}
           <div id="oi-section">
-            <OperadoraOiSection cpfId={result.id} />
+            <OperadoraOiSection cpfId={result.id} onCountChange={setOiCount} />
           </div>
 
           {/* Senhas de Email */}
           <div id="senhas-email-section">
-            <SenhaEmailSection cpfId={result.id} />
+            <SenhaEmailSection cpfId={result.id} onCountChange={setSenhaEmailCount} />
           </div>
 
           {/* Senhas do CPF */}
           <div id="senhas-cpf-section">
-            <SenhaCpfSection cpfId={result.id} />
+            <SenhaCpfSection cpfId={result.id} onCountChange={setSenhaCpfCount} />
           </div>
 
           {/* (Removido) Documento/RG, CNH e NIS conforme solicitado */}
@@ -2878,7 +2967,7 @@ Todos os direitos reservados.`;
 
           {/* Gestão Cadastral */}
           <div id="gestao-cadastral-section">
-            <GestaoSection cpfId={result.id} />
+            <GestaoSection cpfId={result.id} onCountChange={setGestaoCount} />
           </div>
 
 

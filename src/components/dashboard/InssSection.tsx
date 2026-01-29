@@ -11,9 +11,10 @@ import { toast } from "sonner";
 
 interface InssSectionProps {
   cpfId: number;
+  onCountChange?: (count: number) => void;
 }
 
-const InssSection: React.FC<InssSectionProps> = ({ cpfId }) => {
+const InssSection: React.FC<InssSectionProps> = ({ cpfId, onCountChange }) => {
   const [inssList, setInssList] = useState<BaseInss[]>([]);
   const [loading, setLoading] = useState(true);
   const { getInssByCpfId } = useBaseInss();
@@ -24,6 +25,10 @@ const InssSection: React.FC<InssSectionProps> = ({ cpfId }) => {
   useEffect(() => {
     loadInss();
   }, [cpfId]);
+
+  useEffect(() => {
+    onCountChange?.(inssList.length);
+  }, [inssList.length, onCountChange]);
 
   const loadInss = async () => {
     setLoading(true);
@@ -94,15 +99,19 @@ const InssSection: React.FC<InssSectionProps> = ({ cpfId }) => {
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge variant="secondary" className="uppercase tracking-wide">
-              Online
-            </Badge>
-
-            {hasData && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {inssList.length}
+            <div className="relative inline-flex">
+              <Badge variant="secondary" className="uppercase tracking-wide">
+                Online
               </Badge>
-            )}
+              {hasData ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                  aria-label={`Quantidade de benefícios INSS: ${inssList.length}`}
+                >
+                  {inssList.length}
+                </span>
+              ) : null}
+            </div>
 
             {hasData && (
               <Button

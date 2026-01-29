@@ -12,6 +12,7 @@ import type { BaseCns } from '@/services/baseCnsService';
 
 interface CnsSectionProps {
   cpfId?: number;
+  onCountChange?: (count: number) => void;
 }
 
 const formatBrazilianDate = (value?: string | null) => {
@@ -29,7 +30,7 @@ const tipoLabel = (t?: string | null) => {
   return '';
 };
 
-const CnsSection: React.FC<CnsSectionProps> = ({ cpfId }) => {
+const CnsSection: React.FC<CnsSectionProps> = ({ cpfId, onCountChange }) => {
   const { isLoading, error, getCnsByCpfId } = useBaseCns();
   const [items, setItems] = useState<BaseCns[]>([]);
 
@@ -41,6 +42,10 @@ const CnsSection: React.FC<CnsSectionProps> = ({ cpfId }) => {
     };
     load();
   }, [cpfId, getCnsByCpfId]);
+
+  useEffect(() => {
+    onCountChange?.(items.length);
+  }, [onCountChange, items.length]);
 
   const hasData = useMemo(() => items.length > 0, [items]);
   const sectionCardClass = hasData ? 'border-success-border bg-success-subtle' : undefined;
@@ -99,15 +104,19 @@ const CnsSection: React.FC<CnsSectionProps> = ({ cpfId }) => {
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge variant="secondary" className="uppercase tracking-wide">
-              Online
-            </Badge>
-
-            {items.length > 1 && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {items.length}
+            <div className="relative inline-flex">
+              <Badge variant="secondary" className="uppercase tracking-wide">
+                Online
               </Badge>
-            )}
+              {items.length > 0 ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                  aria-label={`Quantidade de CNS: ${items.length}`}
+                >
+                  {items.length}
+                </span>
+              ) : null}
+            </div>
 
             {hasData ? (
               <Button

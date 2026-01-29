@@ -12,9 +12,10 @@ import { formatPhone } from '@/utils/formatters';
 
 interface ClaroSectionProps {
   cpfId: number;
+  onCountChange?: (count: number) => void;
 }
 
-const ClaroSection: React.FC<ClaroSectionProps> = ({ cpfId }) => {
+const ClaroSection: React.FC<ClaroSectionProps> = ({ cpfId, onCountChange }) => {
   const [clarosList, setClarosList] = useState<BaseClaro[]>([]);
   const [loading, setLoading] = useState(true);
   const { getClarosByCpfId } = useBaseClaro();
@@ -25,6 +26,10 @@ const ClaroSection: React.FC<ClaroSectionProps> = ({ cpfId }) => {
   useEffect(() => {
     loadClaro();
   }, [cpfId]);
+
+  useEffect(() => {
+    onCountChange?.(clarosList.length);
+  }, [clarosList.length, onCountChange]);
 
   const loadClaro = async () => {
     setLoading(true);
@@ -92,15 +97,19 @@ const ClaroSection: React.FC<ClaroSectionProps> = ({ cpfId }) => {
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge variant="secondary" className="uppercase tracking-wide">
-              Online
-            </Badge>
-
-            {hasData && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {clarosList.length}
+            <div className="relative inline-flex">
+              <Badge variant="secondary" className="uppercase tracking-wide">
+                Online
               </Badge>
-            )}
+              {hasData ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                  aria-label={`Quantidade de registros Operadora Claro: ${clarosList.length}`}
+                >
+                  {clarosList.length}
+                </span>
+              ) : null}
+            </div>
 
             {hasData && (
               <Button

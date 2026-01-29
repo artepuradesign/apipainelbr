@@ -12,9 +12,10 @@ import { formatDateOnly } from '@/utils/formatters';
 
 interface EmailsSectionProps {
   cpfId?: number;
+  onCountChange?: (count: number) => void;
 }
 
-const EmailsSection: React.FC<EmailsSectionProps> = ({ cpfId }) => {
+const EmailsSection: React.FC<EmailsSectionProps> = ({ cpfId, onCountChange }) => {
   const { isLoading, getEmailsByCpfId } = useBaseEmail();
   const [emails, setEmails] = useState<BaseEmail[]>([]);
 
@@ -28,11 +29,17 @@ const EmailsSection: React.FC<EmailsSectionProps> = ({ cpfId }) => {
         if (result) {
           setEmails(result);
         }
+      } else {
+        setEmails([]);
       }
     };
 
     loadEmails();
   }, [cpfId, getEmailsByCpfId]);
+
+  useEffect(() => {
+    onCountChange?.(emails.length);
+  }, [onCountChange, emails.length]);
 
   const copyEmailsData = () => {
     if (emails.length === 0) return;
@@ -91,15 +98,19 @@ const EmailsSection: React.FC<EmailsSectionProps> = ({ cpfId }) => {
           </CardTitle>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Badge variant="secondary" className="uppercase tracking-wide">
-              Online
-            </Badge>
-
-            {emails.length > 0 && (
-              <Badge variant="secondary" className="bg-success text-success-foreground">
-                {emails.length}
+            <div className="relative inline-flex">
+              <Badge variant="secondary" className="uppercase tracking-wide">
+                Online
               </Badge>
-            )}
+              {emails.length > 0 ? (
+                <span
+                  className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground ring-1 ring-background"
+                  aria-label={`Quantidade de emails: ${emails.length}`}
+                >
+                  {emails.length}
+                </span>
+              ) : null}
+            </div>
 
             {emails.length > 0 && (
               <Button
